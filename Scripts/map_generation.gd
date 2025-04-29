@@ -54,7 +54,7 @@ var noise = FastNoiseLite.new()
 @export var coin_density = 0.02 # Probability (0 to 1) of a coin appearing in a cell where allowed
 @export var coin_boundary_margin = 2 # Number of tiles from the edge where coins won't spawn
 # Note: coin_obstacle_exclusion_margin was not in your provided code, adding back if needed for coins near obstacles
-# @export var coin_obstacle_exclusion_margin = 1 # Number of tiles around an obstacle where coins won't spawn
+@export var coin_obstacle_exclusion_margin = 1 # Number of tiles around an obstacle where coins won't spawn
 
 
 # --- Enemy Parameters ---
@@ -246,38 +246,59 @@ func generate_map():
 			# Check if a coin should be placed at this cell, AND if no obstacle pattern was placed STARTING at this cell's TOP-LEFT COORDINATE.
 			# This prevents coins from spawning exactly where a multi-tile obstacle begins.
 			# Note: Coins might still spawn under other parts of a multi-tile obstacle if the obstacle is larger than 1x1.
+# --- Coin Placement ---
+			# Check if a coin should be placed at this cell based on density.
 			var random_coin_value = randf()
-			if random_coin_value < coin_density and not obstacle_placed:
-				# --- Check if the cell is within the coin boundary margin ---
-				# Coins will only spawn if they are at least 'coin_boundary_margin' tiles away from all map edges.
+			if random_coin_value < coin_density:
+				# --- Check if the cell is within the coin boundary margin from map edges ---
 				if cell_coords.x >= coin_boundary_margin and cell_coords.x < map_width - coin_boundary_margin and \
 				   cell_coords.y >= coin_boundary_margin and cell_coords.y < map_height - coin_boundary_margin:
-					# --- Place the coin if all conditions (density, no obstacle at top-left, within margin) are met ---
-					if coin_scene: # Ensure the Coin scene PackedScene is assigned in the Inspector
-						var coin_instance = coin_scene.instantiate()
-						# Position the coin at the center of the cell relative to the MapGeneration node's origin.
-						# map_to_local converts tile coordinates to the local pixel coordinates of the TileMapLayer's parent (this node).
-						coin_instance.position = ground_layer_node.map_to_local(cell_coords) + tile_size / 2.0
 
-						# Add the coin instance to the scene tree as a child of this MapGeneration node.
-						add_child(coin_instance)
+					# Added: Check if the cell is too close to any obstacle tile
+					var too_close_to_obstacle = false
+					# Iterate through cells within the coin_obstacle_exclusion_margin around the current cell
+					for ox in range(-coin_obstacle_exclusion_margin, coin_obstacle_exclusion_margin + 1):
+						for oy in range(-coin_obstacle_exclusion_margin, coin_obstacle_exclusion_margin + 1):
+							var obstacle_check_coords = cell_coords + Vector2i(ox, oy)
 
-						# Add the coin to the "coin" group for easier counting.
-						# Make sure you have created a group named "coin" in your project settings or editor.
-						coin_instance.add_to_group("coin")
+							# Check bounds for the obstacle check coordinates
+							if obstacle_check_coords.x >= 0 and obstacle_check_coords.x < map_width and \
+							   obstacle_check_coords.y >= 0 and obstacle_check_coords.y < map_height:
+								# Check if there is any tile on the obstacle layer at these coordinates
+								# get_cell_atlas_coords returns Vector2i(-1, -1) if the cell is empty.
+								if obstacle_layer_node.get_cell_atlas_coords(obstacle_check_coords) != Vector2i(-1, -1):
+									too_close_to_obstacle = true
+									break # Found an obstacle tile nearby, no need to check further for this coin cell
+						if too_close_to_obstacle:
+							break # Exit outer oy loop
 
-						# Increment the total coins generated counter
-						total_coins_generated += 1
+					# --- Place the coin if all conditions (density, within map margin, NOT too close to obstacle) are met ---
+					if not too_close_to_obstacle:
+						if coin_scene: # Ensure the Coin scene PackedScene is assigned in the Inspector
+							var coin_instance = coin_scene.instantiate()
+							# Position the coin at the center of the cell relative to the MapGeneration node's origin.
+							# map_to_local converts tile coordinates to the local pixel coordinates of the TileMapLayer's parent (this node).
+							coin_instance.position = ground_layer_node.map_to_local(cell_coords) + tile_size / 2.0
 
-						# Connect the coin's 'collected' signal to the player's 'collect_coin' method.
-						# We need a reference to the player node. Assuming Player is a sibling of the Map node.
-						var player_node = get_node_or_null("../Player") # Use get_node_or_null for safety in case player isn't in scene yet
-						if player_node and player_node.has_method("collect_coin"):
-							# Use Callable for connecting signals in Godot 4 (Callable.bind() can pass extra arguments if needed)
-							coin_instance.collected.connect(player_node.collect_coin)
-						# Suppress warning for common editor scenario where player might not be in scene during map generation preview.
-						# else:
-						# 	print("Warning: Could not find Player node or 'collect_coin' method to connect coin signal.")
+							# Add the coin instance to the scene tree as a child of this MapGeneration node.
+							add_child(coin_instance)
+
+							# Add the coin to the "coin" group for easier counting.
+							# Make sure you have created a group named "coin" in your project settings or editor.
+							coin_instance.add_to_group("coin")
+
+							# Increment the total coins generated counter
+							total_coins_generated += 1
+
+							# Connect the coin's 'collected' signal to the player's 'collect_coin' method.
+							# We need a reference to the player node. Assuming Player is a sibling of the Map node.
+							var player_node = get_node_or_null("../Player") # Use get_node_or_null for safety in case player isn't in scene yet
+							if player_node and player_node.has_method("collect_coin"):
+								# Use Callable for connecting signals in Godot 4 (Callable.bind() can pass extra arguments if needed)
+								coin_instance.collected.connect(player_node.collect_coin)
+							# Suppress warning for common editor scenario where player might not be in scene during map generation preview.
+							# else:
+							# 	print("Warning: Could not find Player node or 'collect_coin' method to connect coin signal.")
 
 
 			# --- End Coin Placement ---

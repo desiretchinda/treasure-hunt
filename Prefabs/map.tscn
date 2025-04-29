@@ -2088,6 +2088,7 @@ water_spawn_chance = 0.0
 coin_scene = ExtResource("2_co773")
 coin_density = 0.005
 coin_boundary_margin = 3
+coin_obstacle_exclusion_margin = 3
 enemy_scene = ExtResource("3_eqwmn")
 enemy_density = 0.009
 
