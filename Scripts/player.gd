@@ -1,30 +1,86 @@
 class_name Player extends CharacterBody2D
 
 # This is the AnimatedSprite2D node used for animations.
+# The sprite_frames resource must be assigned to this node in the editor.
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 @export var speed: float = 200 # Movement speed in pixels per second
 
 var direction_name:String = "Face"
 
+
+# --- Add References to Map and Ground Layer for Positioning ---
+# Assuming Player is a sibling of Map under a common parent.
+@onready var map_node = get_node("../Map")
+# Assuming GroundLayer is a child of Map.
+@onready var ground_layer_node = get_node("../Map/GroundLayer")
+# --- End Add References ---
+
+
+func _ready():
+	# --- Position Player at Bottom-Left of Map ---
+	# Ensure required nodes and tile set are ready for positioning
+	if map_node and ground_layer_node and ground_layer_node.tile_set and animated_sprite_2d and animated_sprite_2d.sprite_frames:
+
+		var map_width = map_node.map_width # Get map width from the Map node's script
+		var map_height = map_node.map_height # Get map height from the Map node's script
+
+		var tile_size = ground_layer_node.tile_set.get_tile_size() # Get tile size
+
+		# Get the global position of the map's top-left corner
+		var map_global_origin = map_node.global_position
+
+		# --- Get Player's Size ---
+		var current_animation_name = animated_sprite_2d.animation # Get the name of the current animation
+		var current_frame_index = animated_sprite_2d.frame # Get the index of the current frame
+		var sprite_frames_resource: SpriteFrames = animated_sprite_2d.sprite_frames # Get SpriteFrames resource
+
+		var player_size = Vector2.ZERO # Default size
+
+		# Check if a valid texture exists for the current frame to get size
+		if sprite_frames_resource.has_animation(current_animation_name) and sprite_frames_resource.get_frame_count(current_animation_name) > current_frame_index:
+			var current_frame_texture: Texture2D = sprite_frames_resource.get_frame_texture(current_animation_name, current_frame_index)
+			if current_frame_texture:
+				player_size = current_frame_texture.get_size()
+
+		if player_size != Vector2.ZERO:
+			# Calculate half size only if player_size was successfully obtained
+			var player_half_size = player_size / 2.0
+
+			# Calculate the target global position for the player's CENTER
+			# We want the player's BOTTOM-LEFT edge to be at the map's BOTTOM-LEFT pixel corner.
+			# Map's bottom-left pixel corner global X: map_global_origin.x
+			# Map's bottom-left pixel corner global Y: map_global_origin.y + map_height * tile_size.y
+
+			# Player's center X = Map's left edge + Player's half width
+			var target_global_pos_x = map_global_origin.x + player_half_size.x
+			# Player's center Y = Map's bottom edge - Player's half height
+			var target_global_pos_y = map_global_origin.y + map_height * tile_size.y - player_half_size.y
+
+			# Set player's global position to the calculated bottom-left position
+			global_position = Vector2(target_global_pos_x, target_global_pos_y)
+			print("Player positioned at bottom-left.")
+		else:
+			print("Warning: Could not determine player size for initial positioning. Ensure AnimatedSprite2D has a valid SpriteFrames resource and animation/frame.")
+	else:
+		print("Error: Required nodes (Map, GroundLayer, TileSet) or AnimatedSprite2D/SpriteFrames not ready for initial positioning. Check scene structure and resource assignments.")
+	# --- End Position Player ---
+
+	# Note: Initial velocity can be set here if the player should start moving immediately.
+	# For example: velocity = Vector2.LEFT * speed # Start moving left
+
+
 func _physics_process(_delta):
 	# Get the input direction vector
 	var input_vector = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
 	# Update the velocity based on the input vector and speed (instant movement)
-	# This matches the style from your previous base script.
 	velocity = input_vector * speed
-
 
 	# Move the character and handle collisions
 	move_and_slide()
 
-	# --- Clamp Player Position to Camera Viewport logic is REMOVED as requested. ---
-	# The code block that checked the camera and clamped the global_position is gone.
-
-
 	# --- Animation Handling ---
-	# (This part correctly uses animated_sprite_2d)
 	# Animation trigger based on velocity length > 0
 	if velocity.length() > 0:
 		var direction = velocity.normalized()
