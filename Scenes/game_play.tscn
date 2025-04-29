@@ -1,8 +1,15 @@
-[gd_scene load_steps=2 format=3 uid="uid://dfknb5o52d8ge"]
+[gd_scene load_steps=4 format=3 uid="uid://dfknb5o52d8ge"]
 
 [ext_resource type="PackedScene" uid="uid://cushluqsadcci" path="res://Prefabs/player.tscn" id="1_ckfrc"]
+[ext_resource type="PackedScene" uid="uid://c022l4ax0dcqt" path="res://Prefabs/map.tscn" id="2_363iw"]
+[ext_resource type="PackedScene" uid="uid://chwuyedxdmg5r" path="res://Prefabs/camera_2d.tscn" id="3_tiviu"]
 
 [node name="GamePlay" type="Node2D"]
 
+[node name="Map" parent="." instance=ExtResource("2_363iw")]
+position = Vector2(567, 320)
+
 [node name="Player" parent="." instance=ExtResource("1_ckfrc")]
 position = Vector2(523, 400)
+
+[node name="Camera2D" parent="." instance=ExtResource("3_tiviu")]
