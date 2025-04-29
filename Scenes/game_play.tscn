@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dxdqcby0gh6rl" path="res://Prefabs/camera_2d.tscn" id="3_tiviu"]
 
 [node name="GamePlay" type="Node2D"]
+y_sort_enabled = true
 
 [node name="Map" parent="." instance=ExtResource("2_363iw")]
 map_width = 150

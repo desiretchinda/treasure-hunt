@@ -1694,6 +1694,7 @@ pattern_21 = SubResource("TileMapPattern_ho23u")
 pattern_22 = SubResource("TileMapPattern_u8wgv")
 
 [node name="Map" type="Node2D"]
+y_sort_enabled = true
 script = ExtResource("1_vsu2c")
 base_dirt_atlas_coords = Vector2i(9, 3)
 grass_atlas_coords = Vector2i(2, 2)
