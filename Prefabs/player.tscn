@@ -209,6 +209,7 @@ animations = [{
 size = Vector2(14, 45)
 
 [node name="Player" type="CharacterBody2D"]
+y_sort_enabled = true
 collision_mask = 7
 script = ExtResource("1_0fs2y")
 speed = 180.0
