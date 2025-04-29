@@ -1,8 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://c022l4ax0dcqt"]
+[gd_scene load_steps=11 format=3 uid="uid://c022l4ax0dcqt"]
 
 [ext_resource type="Texture2D" uid="uid://cbea776qw8kly" path="res://Sprites/map/tiles.png" id="1_2s1nc"]
 [ext_resource type="Script" uid="uid://stkqjemmeepi" path="res://Scripts/map_generation.gd" id="1_vsu2c"]
 [ext_resource type="Texture2D" uid="uid://43uqlg1u07bb" path="res://Sprites/map/assets.png" id="3_hlppc"]
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_s8vim"]
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_hlppc"]
 tile_data = PackedInt32Array(0, 983041, 31, 65536, 983041, 32, 1, 1048577, 31, 65537, 1048577, 32, 2, 1114113, 31, 65538, 1114113, 32)
@@ -1537,6 +1539,7 @@ pattern_2 = SubResource("TileMapPattern_eqwmn")
 script = ExtResource("1_vsu2c")
 base_dirt_atlas_coords = Vector2i(9, 3)
 grass_atlas_coords = Vector2i(2, 2)
+rock_patterns = Array[TileMapPattern]([SubResource("TileMapPattern_s8vim")])
 tree_spawn_chance = 0.03
 tuft_spawn_chance = 0.04
 water_spawn_chance = 0.0
