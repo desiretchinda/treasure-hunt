@@ -15,9 +15,7 @@ static var instance:Player
 
 var direction_name:String = "Face"
 var coins = 0 # Keeps track of collected coins
-
-
-
+var can_move:bool = false
 
 func _ready():
 	instance = self
@@ -74,6 +72,9 @@ func _ready():
 
 
 func _physics_process(_delta):
+	if not can_move:
+		return
+	
 	# Get the input direction vector
 	var input_vector = Input.get_vector("move_left", "move_right", "move_up", "move_down")
 
@@ -96,9 +97,9 @@ func _physics_process(_delta):
 			direction_name = "Face"
 
 		if abs(direction.x) > abs(direction.y):
-			if direction.x < 0:
+			if input_vector.x < 0: # Use input_vector for animation direction when horizontal movement is dominant
 				direction_name = "Left"
-			elif direction.x > 0:
+			elif input_vector.x > 0: # Use input_vector for animation direction when horizontal movement is dominant
 				direction_name = "Right"
 
 		animated_sprite_2d.play("Walk_"+direction_name)
@@ -109,5 +110,16 @@ func _physics_process(_delta):
 
 func collected_coin()->void:
 	coins += 1
-	GameManager.coin_collected.emit()
+	if GameManager.has_signal("coin_collected"):
+		GameManager.coin_collected.emit()
 	print("coin collected ",coins)
+
+# --- Add Game Reset Method ---
+# This method is called by the Enemy script when the player is hit.
+func reset_game():
+	print("Player hit! Resetting game...") # Print a message indicating the game is resetting
+	# Get the path of the current scene file
+	var current_scene_path = get_tree().current_scene.scene_file_path
+	# Reload the current scene, effectively resetting the game state.
+	get_tree().reload_current_scene()
+# --- End Add Game Reset Method ---

@@ -53,7 +53,7 @@ script = ExtResource("1_f2p4i")
 sprite_frames = SubResource("SpriteFrames_8od3o")
 animation = &"Idle"
 autoplay = "Idle"
-frame_progress = 0.493588
+frame_progress = 0.51947
 speed_scale = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

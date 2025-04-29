@@ -21,7 +21,8 @@ GameManager="*res://Scripts/GameManager.gd"
 
 [global_group]
 
-coin=""
+Enemies=""
+Coins=""
 
 [input]
 

@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=3 uid="uid://b1shjww5fs75v"]
+
+[ext_resource type="Texture2D" uid="uid://c6f56uasf4rj2" path="res://icon.svg" id="1_leowk"]
+[ext_resource type="Script" uid="uid://b6vpgq2n7pb7d" path="res://Scripts/enemy.gd" id="1_lgw76"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_govpq"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_leowk")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_leowk")
+}],
+"loop": true,
+"name": &"Walk",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_govpq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lgw76"]
+
+[node name="Enemy" type="CharacterBody2D" groups=["Enemies", "coin"]]
+collision_mask = 2
+script = ExtResource("1_lgw76")
+speed = 80
+min_change_time = 3.0
+max_change_time = 7.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.2, 0.2)
+sprite_frames = SubResource("SpriteFrames_govpq")
+animation = &"Walk"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_govpq")
+
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+shape = SubResource("RectangleShape2D_lgw76")
+
+[node name="ChangeDirectionTimer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true

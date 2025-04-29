@@ -12,7 +12,7 @@ extends Camera2D
 @onready var ground_layer_node = get_node("../Map/GroundLayer")
 
 # Reference to the player node. Assuming Player is a sibling of Camera2D.
-@onready var player = get_node("../Player") # Corrected path
+@onready var player:Player = get_node("../Player") # Corrected path
 
 
 func _process(delta):
@@ -70,3 +70,5 @@ func _process(delta):
 
 		# Update the camera's global position to the clamped position
 		global_position = clamped_position
+		if not player.can_move:
+			player.can_move = true
