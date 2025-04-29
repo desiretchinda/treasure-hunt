@@ -292,9 +292,6 @@ func generate_map():
 							# Add the enemy instance to the scene tree as a child of this MapGeneration node
 							add_child(enemy_instance)
 
-							# Add enemy to a group for easier management (e.g., "Enemies")
-							# Make sure you have created a group named "Enemies" in your project settings or editor.
-							enemy_instance.add_to_group("Enemies")
 
 						else:
 							print("Warning: Enemy scene PackedScene is not assigned in the Inspector. Cannot place enemies.")
@@ -310,7 +307,7 @@ func generate_map():
 # --- Function to get the number of coins currently in the scene ---
 # Counts all nodes currently in the "coin" group.
 func get_coins_left() -> int:
-	var coins = get_tree().get_nodes_in_group("Coins")
+	var coins = get_tree().get_nodes_in_group("coin")
 	return coins.size()
 
 # --- Function to get the total number of coins generated ---
