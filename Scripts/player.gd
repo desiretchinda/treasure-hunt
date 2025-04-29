@@ -66,9 +66,9 @@ func _ready():
 	else:
 		print("Error: Required nodes (Map, GroundLayer, TileSet) or AnimatedSprite2D/SpriteFrames not ready for initial positioning. Check scene structure and resource assignments.")
 	# --- End Position Player ---
-
-	# Note: Initial velocity can be set here if the player should start moving immediately.
-	# For example: velocity = Vector2.LEFT * speed # Start moving left
+	
+	await get_tree().create_timer(.5).timeout
+	can_move = true
 
 
 func _physics_process(_delta):

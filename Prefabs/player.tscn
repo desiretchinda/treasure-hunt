@@ -216,7 +216,8 @@ speed = 180.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_3icqa")
-animation = &"Walk_Right"
+animation = &"Idle_Face"
+autoplay = "Idle_Face"
 speed_scale = 1.5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

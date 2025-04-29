@@ -70,5 +70,3 @@ func _process(delta):
 
 		# Update the camera's global position to the clamped position
 		global_position = clamped_position
-		if not player.can_move:
-			player.can_move = true
