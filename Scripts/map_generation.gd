@@ -1,6 +1,8 @@
 # Extends a parent node like Node2D
 class_name MapGeneration extends Node2D
 
+static var instance:MapGeneration
+
 # --- Map Dimensions ---
 @export var map_width = 50 # Width of the tilemap in tiles
 @export var map_height = 50 # Height of the tilemap in tiles
@@ -66,6 +68,7 @@ var tile_set_ground_source_id = 0 # Assuming ground tiles are in the first sourc
 
 # --- Ready Function ---
 func _ready():
+	instance = self
 	# --- Seed the random number generators ---
 	seed(generation_seed) # Use the user-provided seed for Godot's general RNG (used by randf(), randi() etc. for obstacle chances)
 	noise.seed = generation_seed # Also use the seed for the noise object (used for terrain patterns on the ground layer)
@@ -220,22 +223,15 @@ func generate_map():
 						# 	print("Warning: Could not find Player node or 'collect_coin' method to connect coin signal.")
 
 			# --- End Coin Placement ---
-
+	
+	GameManager.map_generated.emit()
 	print("Random TileMap Generated! Total coins generated: ", total_coins_generated)
 
 
 # --- Function to get the number of coins currently in the scene ---
 func get_coins_left() -> int:
-	var coins_count = 0
-	# Iterate through all children of this MapGeneration node
-	for child in get_children():
-		# Check if the child is an instance of the Coin scene (or the Coin script)
-		# Using is_instance_of() is generally safer than checking class_name string
-		if child.is_instance_of(Area2D) and child.has_signal("collected"): # Check if it's an Area2D and has the 'collected' signal (from Coin.gd)
-		# Alternatively, if Coin.gd has a class_name, you could use:
-		# if child is Coin:
-			coins_count += 1
-	return coins_count
+	var coins = get_tree().get_nodes_in_group("coin")
+	return coins.size()
 
 # --- Function to get the total number of coins generated ---
 func get_total_coins_generated() -> int:

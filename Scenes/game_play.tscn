@@ -3,11 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://cushluqsadcci" path="res://Prefabs/player.tscn" id="1_ckfrc"]
 [ext_resource type="PackedScene" uid="uid://c022l4ax0dcqt" path="res://Prefabs/map.tscn" id="2_363iw"]
 [ext_resource type="PackedScene" uid="uid://dxdqcby0gh6rl" path="res://Prefabs/camera_2d.tscn" id="3_tiviu"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_tiviu"]
-font_size = 24
-outline_size = 2
-outline_color = Color(0, 0.482353, 0.584314, 1)
+[ext_resource type="PackedScene" uid="uid://coavirghx200t" path="res://Prefabs/hud.tscn" id="4_yovil"]
 
 [node name="GamePlay" type="Node2D"]
 y_sort_enabled = true
@@ -21,17 +17,4 @@ position = Vector2(523, 400)
 
 [node name="Camera2D" parent="." instance=ExtResource("3_tiviu")]
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="Control" type="Control" parent="CanvasLayer"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="LabelCollected" type="Label" parent="CanvasLayer/Control"]
-layout_mode = 1
-offset_right = 40.0
-offset_bottom = 23.0
-text = "Coins Collected: X/Y"
-label_settings = SubResource("LabelSettings_tiviu")
+[node name="HUD" parent="." instance=ExtResource("4_yovil")]

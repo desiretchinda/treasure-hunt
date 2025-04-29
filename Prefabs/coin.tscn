@@ -45,7 +45,7 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i2k62"]
 size = Vector2(82, 95)
 
-[node name="Coin" type="Area2D"]
+[node name="Coin" type="Area2D" groups=["coin"]]
 scale = Vector2(0.2, 0.2)
 script = ExtResource("1_f2p4i")
 
@@ -53,7 +53,7 @@ script = ExtResource("1_f2p4i")
 sprite_frames = SubResource("SpriteFrames_8od3o")
 animation = &"Idle"
 autoplay = "Idle"
-frame_progress = 0.0612997
+frame_progress = 0.493588
 speed_scale = 2.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

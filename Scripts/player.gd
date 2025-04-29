@@ -109,4 +109,5 @@ func _physics_process(_delta):
 
 func collected_coin()->void:
 	coins += 1
-	print("coin collected")
+	GameManager.coin_collected.emit()
+	print("coin collected ",coins)

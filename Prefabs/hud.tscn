@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://coavirghx200t"]
+
+[ext_resource type="Script" uid="uid://bchsql51uivt8" path="res://Scripts/hud.gd" id="1_s3bvw"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_tiviu"]
+font_size = 24
+outline_size = 2
+outline_color = Color(0, 0.482353, 0.584314, 1)
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_s3bvw")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="LabelCollected" type="Label" parent="Control"]
+layout_mode = 1
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Coins Collected: X/Y"
+label_settings = SubResource("LabelSettings_tiviu")
