@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://c022l4ax0dcqt"]
+[gd_scene load_steps=30 format=3 uid="uid://c022l4ax0dcqt"]
 
 [ext_resource type="Texture2D" uid="uid://cbea776qw8kly" path="res://Sprites/map/tiles.png" id="1_2s1nc"]
 [ext_resource type="Script" uid="uid://stkqjemmeepi" path="res://Scripts/map_generation.gd" id="1_vsu2c"]
@@ -42,6 +42,15 @@ tile_data = PackedInt32Array(131072, 1441793, 18, 1, 1507329, 16, 65537, 1507329
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_eqwmn"]
 tile_data = PackedInt32Array(0, 1245185, 40, 65536, 1245185, 41, 131072, 1245185, 42, 1, 1310721, 40, 65537, 1310721, 41, 131073, 1310721, 42, 65538, 1376257, 41, 131074, 1376257, 42)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_gdhor"]
+tile_data = PackedInt32Array(0, 0, 12, 65536, 0, 13, 131072, 0, 14, 196608, 0, 15, 1, 65536, 12, 65537, 65536, 13, 131073, 65536, 14, 196609, 65536, 15, 2, 131072, 12, 65538, 131072, 13, 131074, 131072, 14, 196610, 131072, 15, 3, 196608, 12, 65539, 196608, 13, 131075, 196608, 14, 196611, 196608, 15)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_ho23u"]
+tile_data = PackedInt32Array(0, 262144, 12, 65536, 262144, 13, 131072, 262144, 14, 196608, 262144, 15, 1, 327680, 12, 65537, 327680, 13, 131073, 327680, 14, 196609, 327680, 15, 2, 393216, 12, 65538, 393216, 13, 131074, 393216, 14, 196610, 393216, 15, 3, 458752, 12, 65539, 458752, 13, 131075, 458752, 14, 196611, 458752, 15)
+
+[sub_resource type="TileMapPattern" id="TileMapPattern_u8wgv"]
+tile_data = PackedInt32Array(0, 0, 0, 65536, 0, 1, 131072, 0, 2, 196608, 0, 3, 262144, 0, 4, 327680, 0, 5, 1, 65536, 0, 65537, 65536, 1, 131073, 65536, 2, 196609, 65536, 3, 262145, 65536, 4, 327681, 65536, 5, 2, 131072, 0, 65538, 131072, 1, 131074, 131072, 2, 196610, 131072, 3, 262146, 131072, 4, 327682, 131072, 5, 3, 196608, 0, 65539, 196608, 1, 131075, 196608, 2, 196611, 196608, 3, 262147, 196608, 4, 327683, 196608, 5, 4, 262144, 0, 65540, 262144, 1, 131076, 262144, 2, 196612, 262144, 3, 262148, 262144, 4, 327684, 262144, 5, 5, 327680, 0, 65541, 327680, 1, 131077, 327680, 2, 196613, 327680, 3, 262149, 327680, 4, 327685, 327680, 5)
 
 [sub_resource type="TileMapPattern" id="TileMapPattern_jaosx"]
 tile_data = PackedInt32Array(0, 720897, 31, 65536, 720897, 32, 131072, 720897, 33, 1, 786433, 31, 65537, 786433, 32, 131073, 786433, 33, 2, 851969, 31, 65538, 851969, 32, 131074, 851969, 33, 3, 917505, 31, 65539, 917505, 32, 131075, 917505, 33)
@@ -1600,6 +1609,9 @@ pattern_16 = SubResource("TileMapPattern_evybo")
 pattern_17 = SubResource("TileMapPattern_st5cd")
 pattern_18 = SubResource("TileMapPattern_wrfe4")
 pattern_19 = SubResource("TileMapPattern_lh4en")
+pattern_20 = SubResource("TileMapPattern_gdhor")
+pattern_21 = SubResource("TileMapPattern_ho23u")
+pattern_22 = SubResource("TileMapPattern_u8wgv")
 
 [node name="Map" type="Node2D"]
 script = ExtResource("1_vsu2c")
@@ -1608,7 +1620,6 @@ grass_atlas_coords = Vector2i(2, 2)
 tree_pattern_indices = Array[int]([8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19])
 rock_pattern_indices = Array[int]([0, 1, 2])
 tuft_pattern_indices = Array[int]([3, 4, 5, 6, 7])
-grass_threshold = 0.007
 tree_spawn_chance = 0.007
 rock_spawn_chance = 0.007
 tuft_spawn_chance = 0.007
