@@ -13,6 +13,7 @@ script = ExtResource("1_2xnml")
 
 [node name="LimitUp" type="StaticBody2D" parent="."]
 position = Vector2(-567, -312)
+collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LimitUp"]
 position = Vector2(603, 0)
@@ -20,6 +21,7 @@ shape = SubResource("RectangleShape2D_2xnml")
 
 [node name="LimitDown" type="StaticBody2D" parent="."]
 position = Vector2(-567, 318)
+collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LimitDown"]
 position = Vector2(603, 0)
@@ -27,6 +29,7 @@ shape = SubResource("RectangleShape2D_2xnml")
 
 [node name="LimitLeft" type="StaticBody2D" parent="."]
 position = Vector2(-567, 318)
+collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LimitLeft"]
 position = Vector2(-2.5, -325.5)
@@ -34,6 +37,7 @@ shape = SubResource("RectangleShape2D_gkt78")
 
 [node name="LimitRight" type="StaticBody2D" parent="."]
 position = Vector2(569, 318)
+collision_layer = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LimitRight"]
 position = Vector2(-2.5, -325.5)
