@@ -1710,5 +1710,6 @@ water_spawn_chance = 0.0
 tile_set = SubResource("TileSet_0in8a")
 
 [node name="ObstacleLayer" type="TileMapLayer" parent="."]
+y_sort_enabled = true
 position = Vector2(19, 0)
 tile_set = SubResource("TileSet_0in8a")
