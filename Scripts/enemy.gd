@@ -64,6 +64,6 @@ func _on_detection_area_body_entered(body):
 		# Ensure the Player script has a 'reset_game' method.
 		print("Player touched")
 		if body.has_method("reset_game"):
-			body.reset_game()
+			body.reset_game.call_deferred()
 		else:
 			print("Error: Player script does not have a 'reset_game' method.")

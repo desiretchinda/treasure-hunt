@@ -53,6 +53,8 @@ var noise = FastNoiseLite.new()
 @export var coin_scene: PackedScene # Drag your Coin.tscn scene file here in the Inspector
 @export var coin_density = 0.02 # Probability (0 to 1) of a coin appearing in a cell where allowed
 @export var coin_boundary_margin = 2 # Number of tiles from the edge where coins won't spawn
+# Note: coin_obstacle_exclusion_margin was not in your provided code, adding back if needed for coins near obstacles
+# @export var coin_obstacle_exclusion_margin = 1 # Number of tiles around an obstacle where coins won't spawn
 
 
 # --- Enemy Parameters ---
@@ -60,6 +62,11 @@ var noise = FastNoiseLite.new()
 @export var enemy_density = 0.005 # Probability (0 to 1) of an enemy appearing in a cell where allowed
 @export var enemy_boundary_margin = 3 # Number of tiles from the edge where enemies won't spawn
 @export var min_distance_from_player_start = 5 # Minimum distance (in tiles) from player start position to spawn enemy
+
+
+# --- Map Generation Parameters ---
+# New parameter to define the number of obstacle-free columns at the start
+@export var obstacle_free_start_columns = 3 # Number of columns from the left edge to keep free of obstacles
 
 
 # --- Coin Counters ---
@@ -155,6 +162,12 @@ func generate_map():
 
 
 			# --- Obstacle Layer Placement (Various Multi-Tile Types using Patterns - deterministic) ---
+			# --- Check if this cell is within the obstacle-free start columns ---
+			# If it is, skip obstacle placement for this cell.
+			if cell_coords.x < obstacle_free_start_columns:
+				continue # Skip the rest of the loop for this cell and move to the next one
+
+
 			# Generate a random value to decide if an obstacle should be considered for placement at this cell
 			var random_obstacle_chooser = randf()
 
@@ -206,6 +219,7 @@ func generate_map():
 								   abs_map_coord.y < 0 or abs_map_coord.y >= map_height:
 									can_place_obstacle = false
 									break # If any part is out of bounds, we cannot place the obstacle. Exit inner dy loop.
+
 								# Check if cell is already occupied on the obstacle layer: Avoid placing on top of existing obstacles or other parts of multi-tile obstacles already placed in this generation pass.
 								# get_cell_atlas_coords returns Vector2i(-1, -1) if the cell is empty on this layer.
 								if obstacle_layer_node.get_cell_atlas_coords(abs_map_coord) != Vector2i(-1, -1):
