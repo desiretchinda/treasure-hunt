@@ -12,7 +12,7 @@ class_name MapGeneration extends Node2D
 
 
 # --- TileMap Pattern Indices for Obstacles (Get these from your Obstacle TileSet Patterns tab) ---
-# Each array holds the indices of patterns for a specific obstacle type within the TileSet.
+# These are for the Obstacle Layer TileSet source. Each array holds the indices of patterns for a specific obstacle type within the TileSet.
 # You will need to know the index of each pattern you created in the TileSet editor.
 @export var tree_pattern_indices: Array[int] = [] # Example: [0, 1] if your first two patterns are trees
 @export var rock_pattern_indices: Array[int] = [] # Example: [2] if your third pattern is a rock
@@ -40,6 +40,16 @@ var noise = FastNoiseLite.new()
 @export var water_spawn_chance = 0.003 # Probability of attempting to place a water instance
 
 
+# --- Coin Parameters ---
+@export var coin_scene: PackedScene # Drag your Coin.tscn scene file here in the Inspector
+@export var coin_density = 0.02 # Probability (0 to 1) of a coin appearing in a cell
+@export var coin_boundary_margin = 2 # Number of tiles from the edge where coins won't spawn
+
+
+# --- Coin Counters ---
+var total_coins_generated = 0 # Variable to store the total number of coins generated
+
+
 # --- Node References ---
 # Get references to the TileMapLayer nodes
 # Make sure the node names here match the names in your scene tree
@@ -65,7 +75,7 @@ func _ready():
 	# Add other noise parameters here (e.g., noise.fractal_octaves, noise.fractal_lacunarity)
 	# as needed for more complex noise patterns.
 
-	# Generate the map across all layers
+	# Generate the map across all layers and place coins
 	generate_map()
 
 
@@ -75,6 +85,14 @@ func generate_map():
 	# Clear existing tiles from ALL TileMapLayer nodes
 	ground_layer_node.clear()
 	obstacle_layer_node.clear()
+
+	# Reset the total coins generated counter
+	total_coins_generated = 0
+
+	# Get tile size once for positioning coins and checking obstacle pattern size
+	var tile_size = Vector2.ONE # Default to 1 just in case
+	if ground_layer_node and ground_layer_node.tile_set:
+		tile_size = ground_layer_node.tile_set.get_tile_size()
 
 	# Loop through each cell in the map grid
 	for y in range(map_height):
@@ -119,6 +137,7 @@ func generate_map():
 				chosen_pattern_indices_list = water_pattern_indices
 
 			# --- If an Obstacle Type was Chosen and Patterns Exist ---
+			var obstacle_placed = false # Flag to check if an obstacle was successfully placed starting at this cell
 			if chosen_obstacle_type != "" and not chosen_pattern_indices_list.is_empty():
 				# Get the TileSet resource from the obstacle layer node
 				var obstacle_tile_set: TileSet = obstacle_layer_node.tile_set
@@ -143,7 +162,7 @@ func generate_map():
 
 								# Check bounds: Ensure the entire pattern fits within the map dimensions
 								if abs_map_coord.x < 0 or abs_map_coord.x >= map_width or \
-								   abs_map_coord.y < 0 or abs_map_coord.y >= map_height:
+									abs_map_coord.y < 0 or abs_map_coord.y >= map_height:
 									can_place_obstacle = false
 									break # Exit inner dy loop
 								# Check if cell is already occupied on the obstacle layer: Avoid placing on top of existing obstacles
@@ -158,6 +177,7 @@ func generate_map():
 						if can_place_obstacle:
 							# Place the entire obstacle pattern with its top-left at cell_coords
 							obstacle_layer_node.set_pattern(cell_coords, chosen_pattern)
+							obstacle_placed = true # Mark that an obstacle was successfully placed starting at this cell
 					else:
 						print("Warning: Could not retrieve pattern with index ", chosen_pattern_index, " from ObstacleLayer's TileSet.")
 				else:
@@ -165,4 +185,58 @@ func generate_map():
 
 			# --- End Obstacle Layer Placement ---
 
-	print("Random TileMap Generated!")
+
+			# --- Coin Placement ---
+			# Check if a coin should be placed at this cell, AND if no obstacle was placed STARTING at this cell's TOP-LEFT COORDINATE
+			var random_coin_value = randf()
+			# We check if an obstacle pattern was placed starting at THIS cell's top-left coordinate.
+			# This prevents coins from spawning *exactly* where a multi-tile obstacle begins.
+			# Note: Coins might still spawn under other parts of a multi-tile obstacle if the obstacle is larger than 1x1.
+			if random_coin_value < coin_density and not obstacle_placed:
+				# --- Check if the cell is within the coin boundary margin ---
+				if cell_coords.x >= coin_boundary_margin and cell_coords.x < map_width - coin_boundary_margin and \
+				   cell_coords.y >= coin_boundary_margin and cell_coords.y < map_height - coin_boundary_margin:
+					# --- Place the coin if all conditions are met ---
+					if coin_scene: # Ensure coin_scene PackedScene is assigned
+						var coin_instance = coin_scene.instantiate()
+						# Position the coin at the center of the cell relative to the MapGeneration node's origin
+						# map_to_local converts tile coordinates to local pixel coordinates of the TileMapLayer's parent
+						coin_instance.position = ground_layer_node.map_to_local(cell_coords) + tile_size / 2.0
+
+						# Add the coin instance to the scene tree as a child of the MapGeneration node
+						add_child(coin_instance)
+
+						# Increment the total coins generated counter
+						total_coins_generated += 1
+
+						# Connect the coin's collected signal to the player's collection method
+						# We need a reference to the player node here. Assuming Player is a sibling of the Map node.
+						var player_node = get_node_or_null("../Player") # Use get_node_or_null for safety
+						if player_node and player_node.has_method("collect_coin"):
+							# Use Callable for connecting signals in Godot 4
+							coin_instance.collected.connect(player_node.collect_coin)
+						# Suppress warning for common editor scenario where player might not be in scene
+						# else:
+						# 	print("Warning: Could not find Player node or 'collect_coin' method to connect coin signal.")
+
+			# --- End Coin Placement ---
+
+	print("Random TileMap Generated! Total coins generated: ", total_coins_generated)
+
+
+# --- Function to get the number of coins currently in the scene ---
+func get_coins_left() -> int:
+	var coins_count = 0
+	# Iterate through all children of this MapGeneration node
+	for child in get_children():
+		# Check if the child is an instance of the Coin scene (or the Coin script)
+		# Using is_instance_of() is generally safer than checking class_name string
+		if child.is_instance_of(Area2D) and child.has_signal("collected"): # Check if it's an Area2D and has the 'collected' signal (from Coin.gd)
+		# Alternatively, if Coin.gd has a class_name, you could use:
+		# if child is Coin:
+			coins_count += 1
+	return coins_count
+
+# --- Function to get the total number of coins generated ---
+func get_total_coins_generated() -> int:
+	return total_coins_generated

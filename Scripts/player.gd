@@ -1,23 +1,26 @@
 class_name Player extends CharacterBody2D
 
+static var instance:Player
+
 # This is the AnimatedSprite2D node used for animations.
 # The sprite_frames resource must be assigned to this node in the editor.
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
-
-@export var speed: float = 200 # Movement speed in pixels per second
-
-var direction_name:String = "Face"
-
-
 # --- Add References to Map and Ground Layer for Positioning ---
 # Assuming Player is a sibling of Map under a common parent.
 @onready var map_node = get_node("../Map")
 # Assuming GroundLayer is a child of Map.
 @onready var ground_layer_node = get_node("../Map/GroundLayer")
 # --- End Add References ---
+@export var speed: float = 200 # Movement speed in pixels per second
+
+var direction_name:String = "Face"
+var coins = 0 # Keeps track of collected coins
+
+
 
 
 func _ready():
+	instance = self
 	# --- Position Player at Bottom-Left of Map ---
 	# Ensure required nodes and tile set are ready for positioning
 	if map_node and ground_layer_node and ground_layer_node.tile_set and animated_sprite_2d and animated_sprite_2d.sprite_frames:
@@ -103,3 +106,7 @@ func _physics_process(_delta):
 		# If not moving, play idle animation
 		animated_sprite_2d.play("Idle_"+direction_name)
 	# --- End Animation Handling ---
+
+func collected_coin()->void:
+	coins += 1
+	print("coin collected")
