@@ -7,7 +7,8 @@
 [node name="GamePlay" type="Node2D"]
 
 [node name="Map" parent="." instance=ExtResource("2_363iw")]
-position = Vector2(567, 320)
+map_width = 150
+map_height = 100
 
 [node name="Player" parent="." instance=ExtResource("1_ckfrc")]
 position = Vector2(523, 400)

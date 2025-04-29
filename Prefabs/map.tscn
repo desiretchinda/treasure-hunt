@@ -554,9 +554,12 @@ sources/0 = SubResource("TileSetAtlasSource_8n1g7")
 
 [node name="Map" type="Node2D"]
 script = ExtResource("1_vsu2c")
+base_dirt_atlas_coords = Vector2i(9, 3)
+grass_atlas_coords = Vector2i(2, 2)
 
 [node name="GroundLayer" type="TileMapLayer" parent="."]
 tile_set = SubResource("TileSet_0in8a")
 
 [node name="ObstacleLayer" type="TileMapLayer" parent="."]
+visible = false
 tile_set = SubResource("TileSet_0in8a")

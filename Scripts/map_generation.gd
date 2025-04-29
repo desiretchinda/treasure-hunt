@@ -1,32 +1,63 @@
+# Extends a parent node like Node2D
 class_name MapGeneration extends Node2D
 
+# --- Map Dimensions ---
 @export var map_width = 50 # Width of the tilemap in tiles
 @export var map_height = 50 # Height of the tilemap in tiles
 
-@export var grass_atlas_coords = Vector2i(0, 0) # Atlas coordinates of your grass tile
-@export var ground_tile_atlas_coords = Vector2i(3, 0) # Atlas coordinates of your additional ground tile
+# --- Tile Atlas Coordinates (REPLACE WITH YOURS) ---
+@export var base_dirt_atlas_coords = Vector2i(4, 0) # Atlas coordinates of your base dirt tile (this will form roads where no grass is)
+@export var grass_atlas_coords = Vector2i(0, 0) # Atlas coordinates of your small grass tile
+
 @export var tree_atlas_coords = Vector2i(1, 0) # Atlas coordinates of your tree tile
 @export var obstacle_atlas_coords = Vector2i(2, 0) # Atlas coordinates of your obstacle tile
 
-@export var ground_tile_density = 0.3 # Probability (0 to 1) of the additional ground tile appearing instead of grass
-@export var tree_density = 0.1 # Probability (0 to 1) of a tree appearing in a cell
-@export var obstacle_density = 0.05 # Probability (0 to 1) of an obstacle appearing in a cell
 
+# --- Noise Parameters for Grass Placement ---
+# Using FastNoiseLite for generating organic patterns
+var noise = FastNoiseLite.new()
+
+# Seed for the noise generator AND the general random number generator
+@export var generation_seed = 123 # Change this value to generate a different map
+
+
+@export var noise_frequency = 0.05 # Controls the size of grass patches. Lower is larger patches.
+@export var grass_threshold = 0.1 # Noise value threshold for placing grass (-1 to 1). Higher means more grass.
+
+
+# --- Densities (0 to 1) for Obstacles (These now use the seeded random number generator) ---
+@export var tree_density = 0.1 # Probability of a tree appearing in a cell
+@export var obstacle_density = 0.05 # Probability of an obstacle appearing in a cell
+
+# --- Node References ---
 # Get references to the TileMapLayer nodes
 # Make sure the node names here match the names in your scene tree
-@onready var ground_layer_node: TileMapLayer = $GroundLayer # Change $GroundLayer to the actual path if needed
-@onready var obstacle_layer_node: TileMapLayer = $ObstacleLayer # Change $ObstacleLayer to the actual path if needed
+@onready var ground_layer_node: TileMapLayer = $GroundLayer # Ground layer (base dirt and grass)
+@onready var obstacle_layer_node: TileMapLayer = $ObstacleLayer # Obstacle layer
 
-var tile_set_source_id = 0 # Usually 0 if you only have one Atlas source in your TileSet(s)
+# --- Tile Set Source ---
+var tile_set_source_id = 0 # Usually 0 if you only have one Atlas source in your TileSet(s) for each layer
 
+
+# --- Ready Function ---
 func _ready():
-	# Randomize the random number generator based on time
-	randomize()
+	# --- Seed the random number generators ---
+	# Use the user-provided seed for Godot's general RNG (used by randf(), randi() etc.)
+	seed(generation_seed)
+	# Also use the seed for the noise object (used for terrain patterns)
+	noise.seed = generation_seed
 
+	# --- Configure Noise ---
+	noise.frequency = noise_frequency
+
+	# Generate the map across all layers
 	generate_map()
 
+
+# --- Map Generation Function ---
 func generate_map():
-	# Clear existing tiles from each TileMapLayer node
+	print("Generating tilemap...")
+	# Clear existing tiles from ALL TileMapLayer nodes
 	ground_layer_node.clear()
 	obstacle_layer_node.clear()
 
@@ -35,28 +66,34 @@ func generate_map():
 		for y in range(map_height):
 			var cell_coords = Vector2i(x, y)
 
-			# --- Ground Layer Placement (Grass or another Ground Tile) ---
-			var current_ground_tile_coords = grass_atlas_coords # Default tile is grass
-			var random_ground_value = randf() # Random value to decide between grass and the other ground tile
+			# --- Ground Layer Placement (Dirt and Grass based on Noise) ---
+			# Note: get_noise_2d is already deterministic due to noise.seed
+			var noise_value = noise.get_noise_2d(x, y)
 
-			if random_ground_value < ground_tile_density:
-				current_ground_tile_coords = ground_tile_atlas_coords # If random value is below density, place the other ground tile
+			var current_ground_tile_coords: Vector2i # Variable to hold the chosen tile coordinates
+
+			# If the noise value is above the grass threshold, place grass
+			if noise_value > grass_threshold:
+				current_ground_tile_coords = grass_atlas_coords
+			# Otherwise, place the base dirt tile (this forms the "roads")
+			else:
+				current_ground_tile_coords = base_dirt_atlas_coords
 
 			# Set the chosen tile on the ground layer node
 			ground_layer_node.set_cell(cell_coords, tile_set_source_id, current_ground_tile_coords)
 			# --- End Ground Layer Placement ---
 
 
-			# --- Obstacle Layer Placement (Trees or Obstacles) ---
-			# Randomly decide if a tree or obstacle should be placed on the obstacle layer node
-			var random_obstacle_value = randf() # Get a random float between 0.0 and 1.0
+			# --- Obstacle Layer Placement (Trees or Obstacles - now deterministic) ---
+			# Note: randf() is now deterministic due to the seed(generation_seed) call in _ready
+			var random_obstacle_value = randf()
 
 			if random_obstacle_value < tree_density:
-				# Place a tree
+				# Place a tree on the obstacle layer node
 				obstacle_layer_node.set_cell(cell_coords, tile_set_source_id, tree_atlas_coords)
 			elif random_obstacle_value < tree_density + obstacle_density:
-				# Place an obstacle (only if a tree wasn't placed)
+				# Place an obstacle on the obstacle layer node (only if a tree wasn't placed)
 				obstacle_layer_node.set_cell(cell_coords, tile_set_source_id, obstacle_atlas_coords)
 			# --- End Obstacle Layer Placement ---
 
-	print("Random TileMap Generated using TileMapLayer nodes!")
+	print("Random TileMap Generated!")
