@@ -6,16 +6,21 @@ class_name MapGeneration extends Node2D
 @export var map_height = 50 # Height of the tilemap in tiles
 
 # --- Tile Atlas Coordinates (REPLACE WITH YOURS) ---
+# These are for the Ground Layer
 @export var base_dirt_atlas_coords = Vector2i(4, 0) # Atlas coordinates of your base dirt tile (this will form roads where no grass is)
 @export var grass_atlas_coords = Vector2i(0, 0) # Atlas coordinates of your small grass tile
 
-@export var tree_atlas_coords = Vector2i(1, 0) # Atlas coordinates of your tree tile
-@export var obstacle_atlas_coords = Vector2i(2, 0) # Atlas coordinates of your obstacle tile
+
+# --- TileMap Patterns for Obstacles (Drag and Drop from TileSet Patterns tab in Inspector) ---
+# Each array holds patterns for a specific obstacle type.
+@export var tree_patterns: Array[TileMapPattern] = []
+@export var rock_patterns: Array[TileMapPattern] = []
+@export var tuft_patterns: Array[TileMapPattern] = []
+@export var water_patterns: Array[TileMapPattern] = []
 
 
 # --- Noise Parameters for Grass Placement ---
-# Using FastNoiseLite for generating organic patterns
-var noise = FastNoiseLite.new()
+var noise = FastNoiseLite.new() # Using FastNoiseLite for generating organic patterns
 
 # Seed for the noise generator AND the general random number generator
 @export var generation_seed = 123 # Change this value to generate a different map
@@ -25,9 +30,13 @@ var noise = FastNoiseLite.new()
 @export var grass_threshold = 0.1 # Noise value threshold for placing grass (-1 to 1). Higher means more grass.
 
 
-# --- Densities (0 to 1) for Obstacles (These now use the seeded random number generator) ---
-@export var tree_density = 0.1 # Probability of a tree appearing in a cell
-@export var obstacle_density = 0.05 # Probability of an obstacle appearing in a cell
+# --- Spawn Chances (0 to 1) for Each Obstacle Type ---
+# Probabilities are checked sequentially. Total chance of an obstacle instance is the sum of these.
+@export var tree_spawn_chance = 0.008 # Probability of placing a tree instance
+@export var rock_spawn_chance = 0.004 # Probability of placing a rock instance
+@export var tuft_spawn_chance = 0.01 # Probability of placing a tuft of grass instance
+@export var water_spawn_chance = 0.003 # Probability of placing a water instance
+
 
 # --- Node References ---
 # Get references to the TileMapLayer nodes
@@ -36,19 +45,23 @@ var noise = FastNoiseLite.new()
 @onready var obstacle_layer_node: TileMapLayer = $ObstacleLayer # Obstacle layer
 
 # --- Tile Set Source ---
-var tile_set_source_id = 0 # Usually 0 if you only have one Atlas source in your TileSet(s) for each layer
+# These refer to the Source ID within the TileSet resources assigned to each layer.
+var tile_set_ground_source_id = 0 # Usually 0 if only one source in GroundLayer's TileSet
+# Note: When using patterns, the source ID is part of the pattern itself,
+# so we don't strictly need tile_set_obtstacle_source_id here, but keeping it
+# for consistency if other obstacle placement methods were used.
+# var tile_set_obtstacle_source_id = 0
 
 
 # --- Ready Function ---
 func _ready():
 	# --- Seed the random number generators ---
-	# Use the user-provided seed for Godot's general RNG (used by randf(), randi() etc.)
-	seed(generation_seed)
-	# Also use the seed for the noise object (used for terrain patterns)
-	noise.seed = generation_seed
+	seed(generation_seed) # Use the user-provided seed for Godot's general RNG
+	noise.seed = generation_seed # Also use the seed for the noise object
 
 	# --- Configure Noise ---
 	noise.frequency = noise_frequency
+	# Add other noise parameters here
 
 	# Generate the map across all layers
 	generate_map()
@@ -64,36 +77,75 @@ func generate_map():
 	# Loop through each cell in the map grid
 	for x in range(map_width):
 		for y in range(map_height):
-			var cell_coords = Vector2i(x, y)
+			var cell_coords = Vector2i(x, y) # The current cell's map coordinates
 
-			# --- Ground Layer Placement (Dirt and Grass based on Noise) ---
-			# Note: get_noise_2d is already deterministic due to noise.seed
+			# --- Ground Layer Placement (Base Dirt and Grass based on Noise) ---
 			var noise_value = noise.get_noise_2d(x, y)
 
-			var current_ground_tile_coords: Vector2i # Variable to hold the chosen tile coordinates
+			var current_ground_tile_coords # Variable to hold the chosen tile coordinates
 
-			# If the noise value is above the grass threshold, place grass
 			if noise_value > grass_threshold:
 				current_ground_tile_coords = grass_atlas_coords
-			# Otherwise, place the base dirt tile (this forms the "roads")
 			else:
 				current_ground_tile_coords = base_dirt_atlas_coords
 
-			# Set the chosen tile on the ground layer node
-			ground_layer_node.set_cell(cell_coords, tile_set_source_id, current_ground_tile_coords)
+			ground_layer_node.set_cell(cell_coords, tile_set_ground_source_id, current_ground_tile_coords)
 			# --- End Ground Layer Placement ---
 
 
-			# --- Obstacle Layer Placement (Trees or Obstacles - now deterministic) ---
-			# Note: randf() is now deterministic due to the seed(generation_seed) call in _ready
-			var random_obstacle_value = randf()
+			# --- Obstacle Layer Placement (Various Multi-Tile Types using Patterns - deterministic) ---
+			var random_obstacle_chooser = randf() # Random value to decide which obstacle type (if any) to place
 
-			if random_obstacle_value < tree_density:
-				# Place a tree on the obstacle layer node
-				obstacle_layer_node.set_cell(cell_coords, tile_set_source_id, tree_atlas_coords)
-			elif random_obstacle_value < tree_density + obstacle_density:
-				# Place an obstacle on the obstacle layer node (only if a tree wasn't placed)
-				obstacle_layer_node.set_cell(cell_coords, tile_set_source_id, obstacle_atlas_coords)
+			var chosen_obstacle_type = "" # To store the name of the chosen type
+			var chosen_patterns_list: Array[TileMapPattern] = [] # To store the list of patterns for the type
+
+			# --- Determine Obstacle Type based on Chances ---
+			# Probabilities are checked sequentially
+			if random_obstacle_chooser < tree_spawn_chance:
+				chosen_obstacle_type = "tree"
+				chosen_patterns_list = tree_patterns
+			elif random_obstacle_chooser < tree_spawn_chance + rock_spawn_chance:
+				chosen_obstacle_type = "rock"
+				chosen_patterns_list = rock_patterns
+			elif random_obstacle_chooser < tree_spawn_chance + rock_spawn_chance + tuft_spawn_chance:
+				chosen_obstacle_type = "tuft"
+				chosen_patterns_list = tuft_patterns
+			elif random_obstacle_chooser < tree_spawn_chance + rock_spawn_chance + tuft_spawn_chance + water_spawn_chance:
+				chosen_obstacle_type = "water"
+				chosen_patterns_list = water_patterns
+
+			# --- If an Obstacle Type was Chosen and Patterns Exist ---
+			if chosen_obstacle_type != "" and not chosen_patterns_list.is_empty():
+				# Choose a random pattern for the obstacle type
+				var chosen_pattern = chosen_patterns_list[randi_range(0, chosen_patterns_list.size() - 1)]
+
+				# Get the size of the pattern in tiles
+				var pattern_size = chosen_pattern.get_size()
+
+				# --- Check if all cells required by the pattern are clear on the obstacle layer ---
+				var can_place_obstacle = true
+				# Iterate through the area the pattern would occupy
+				for dx in range(pattern_size.x):
+					for dy in range(pattern_size.y):
+						var abs_map_coord = cell_coords + Vector2i(dx, dy) # Calculate the absolute map coordinate
+
+						# Check bounds
+						if abs_map_coord.x < 0 or abs_map_coord.x >= map_width or \
+						   abs_map_coord.y < 0 or abs_map_coord.y >= map_height:
+							can_place_obstacle = false
+							break # Break inner loop
+						# Check if cell is already occupied on the obstacle layer
+						if obstacle_layer_node.get_cell_atlas_coords(abs_map_coord) != Vector2i(-1, -1):
+							can_place_obstacle = false
+							break # Break inner loop
+					if not can_place_obstacle:
+						break # Break outer loop
+
+				# --- If the area is clear, place the pattern ---
+				if can_place_obstacle:
+					# Place the entire obstacle pattern with its top-left at cell_coords
+					obstacle_layer_node.set_pattern(cell_coords, chosen_pattern)
+
 			# --- End Obstacle Layer Placement ---
 
 	print("Random TileMap Generated!")

@@ -1,6 +1,40 @@
-[gd_scene load_steps=2 format=3 uid="uid://chwuyedxdmg5r"]
+[gd_scene load_steps=4 format=3 uid="uid://dxdqcby0gh6rl"]
 
 [ext_resource type="Script" uid="uid://dle14vm0civis" path="res://Scripts/camera_2d.gd" id="1_2xnml"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2xnml"]
+size = Vector2(1308, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gkt78"]
+size = Vector2(23, 709)
+
 [node name="Camera2D" type="Camera2D"]
 script = ExtResource("1_2xnml")
+
+[node name="LimitUp" type="StaticBody2D" parent="."]
+position = Vector2(-567, -312)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LimitUp"]
+position = Vector2(603, 0)
+shape = SubResource("RectangleShape2D_2xnml")
+
+[node name="LimitDown" type="StaticBody2D" parent="."]
+position = Vector2(-567, 318)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LimitDown"]
+position = Vector2(603, 0)
+shape = SubResource("RectangleShape2D_2xnml")
+
+[node name="LimitLeft" type="StaticBody2D" parent="."]
+position = Vector2(-567, 318)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LimitLeft"]
+position = Vector2(-2.5, -325.5)
+shape = SubResource("RectangleShape2D_gkt78")
+
+[node name="LimitRight" type="StaticBody2D" parent="."]
+position = Vector2(569, 318)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LimitRight"]
+position = Vector2(-2.5, -325.5)
+shape = SubResource("RectangleShape2D_gkt78")

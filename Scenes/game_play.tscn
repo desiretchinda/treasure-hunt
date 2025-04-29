@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cushluqsadcci" path="res://Prefabs/player.tscn" id="1_ckfrc"]
 [ext_resource type="PackedScene" uid="uid://c022l4ax0dcqt" path="res://Prefabs/map.tscn" id="2_363iw"]
-[ext_resource type="PackedScene" uid="uid://chwuyedxdmg5r" path="res://Prefabs/camera_2d.tscn" id="3_tiviu"]
+[ext_resource type="PackedScene" uid="uid://dxdqcby0gh6rl" path="res://Prefabs/camera_2d.tscn" id="3_tiviu"]
 
 [node name="GamePlay" type="Node2D"]
 
