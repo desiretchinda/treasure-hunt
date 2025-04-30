@@ -1,13 +1,68 @@
-[gd_scene load_steps=6 format=3 uid="uid://b1shjww5fs75v"]
+[gd_scene load_steps=20 format=3 uid="uid://b1shjww5fs75v"]
 
-[ext_resource type="Texture2D" uid="uid://c6f56uasf4rj2" path="res://icon.svg" id="1_leowk"]
 [ext_resource type="Script" uid="uid://b6vpgq2n7pb7d" path="res://Scripts/enemy.gd" id="1_lgw76"]
+[ext_resource type="Texture2D" uid="uid://eawjrxsyjeix" path="res://Sprites/Enemy/RatAttackAnimation(electricity)/RatAttackAnimation(electricity)-0.png" id="2_mxgsx"]
+[ext_resource type="Texture2D" uid="uid://cxcaqbtw4t0f2" path="res://Sprites/Enemy/RatAttackAnimation(electricity)/RatAttackAnimation(electricity)-1.png" id="3_hwma7"]
+[ext_resource type="Texture2D" uid="uid://poadctodmmqr" path="res://Sprites/Enemy/RatAttackAnimation(electricity)/RatAttackAnimation(electricity)-2.png" id="4_o2pe0"]
+[ext_resource type="Texture2D" uid="uid://dxn83baupxxph" path="res://Sprites/Enemy/RatAttackAnimation(electricity)/RatAttackAnimation(electricity)-3.png" id="5_lh86g"]
+[ext_resource type="Texture2D" uid="uid://x5i6tplxveyj" path="res://Sprites/Enemy/RatAttackAnimation(electricity)/RatAttackAnimation(electricity)-4.png" id="6_mh0ig"]
+[ext_resource type="Texture2D" uid="uid://bvs2opb6otxhu" path="res://Sprites/Enemy/RatAttackAnimation(electricity)/RatAttackAnimation(electricity)-5.png" id="7_b0psu"]
+[ext_resource type="Texture2D" uid="uid://d0admx6wr6li3" path="res://Sprites/Enemy/RatAttackAnimation(electricity)/RatAttackAnimation(electricity)-6.png" id="8_eeqje"]
+[ext_resource type="Texture2D" uid="uid://dff8de2xunlmq" path="res://Sprites/Enemy/RatAttackAnimation(electricity)/RatAttackAnimation(electricity)-7.png" id="9_ekkco"]
+[ext_resource type="Texture2D" uid="uid://nak6svroq2ot" path="res://Sprites/Enemy/RatAttackAnimation(electricity)/RatAttackAnimation(electricity)-8.png" id="10_rf4l5"]
+[ext_resource type="Texture2D" uid="uid://drs8woayu1qd7" path="res://Sprites/Enemy/RatIdleAnimation/RatIdleAnimation-0.png" id="11_6kwx5"]
+[ext_resource type="Texture2D" uid="uid://dcj2bmps1beyu" path="res://Sprites/Enemy/RatIdleAnimation/RatIdleAnimation-1.png" id="12_mucxx"]
+[ext_resource type="Texture2D" uid="uid://cp3ipdp3rsg70" path="res://Sprites/Enemy/RatIdleAnimation/RatIdleAnimation-2.png" id="13_sc6a1"]
+[ext_resource type="Texture2D" uid="uid://divkcmib1t0s0" path="res://Sprites/Enemy/RatIdleAnimation/RatIdleAnimation-3.png" id="14_xd2q5"]
+[ext_resource type="Texture2D" uid="uid://dteranm00frd5" path="res://Sprites/Enemy/RatWalkAnimation/RatWalkAnimation-0.png" id="15_h25wd"]
+[ext_resource type="Texture2D" uid="uid://lvufnlt6pews" path="res://Sprites/Enemy/RatWalkAnimation/RatWalkAnimation-1.png" id="16_nkb2i"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_govpq"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_leowk")
+"texture": ExtResource("2_mxgsx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_hwma7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_o2pe0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_lh86g")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_mh0ig")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_b0psu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_eeqje")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_ekkco")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_rf4l5")
+}],
+"loop": true,
+"name": &"Attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("11_6kwx5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_mucxx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_sc6a1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_xd2q5")
 }],
 "loop": true,
 "name": &"Idle",
@@ -15,7 +70,10 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("1_leowk")
+"texture": ExtResource("15_h25wd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_nkb2i")
 }],
 "loop": true,
 "name": &"Walk",
@@ -34,9 +92,11 @@ min_change_time = 3.0
 max_change_time = 7.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-scale = Vector2(0.2, 0.2)
 sprite_frames = SubResource("SpriteFrames_govpq")
-animation = &"Walk"
+animation = &"Idle"
+autoplay = "Idle"
+frame_progress = 0.171216
+speed_scale = 1.5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_govpq")
