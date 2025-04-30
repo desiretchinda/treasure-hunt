@@ -12,7 +12,7 @@ static var instance:Player
 @onready var ground_layer_node = get_node("../Map/GroundLayer")
 @onready var blood_particle:GPUParticles2D = $BloodParticle
 @onready var coin_particle:GPUParticles2D = $CoinParticle
-@onready var stream_player:AudioStreamPlayer2D = $StreamPlayer
+@onready var stream_player:AudioStreamPlayer = $StreamPlayer
 # --- End Add References ---
 @export var speed: float = 200 # Movement speed in pixels per second
 
@@ -71,8 +71,10 @@ func _ready():
 		print("Error: Required nodes (Map, GroundLayer, TileSet) or AnimatedSprite2D/SpriteFrames not ready for initial positioning. Check scene structure and resource assignments.")
 	# --- End Position Player ---
 	Door.instance.global_position = global_position+Vector2(0,-40)
+	get_viewport().get_camera_2d().global_position = global_position
 	await get_tree().create_timer(.5).timeout
 	can_move = true
+	get_viewport().get_camera_2d().set_blocking_limit(true)
 
 
 func _physics_process(_delta):

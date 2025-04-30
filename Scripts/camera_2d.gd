@@ -12,8 +12,12 @@ extends Camera2D
 @onready var ground_layer_node = get_node("../Map/GroundLayer")
 
 # Reference to the player node. Assuming Player is a sibling of Camera2D.
-@onready var player:Player = get_node("../Player") # Corrected path
+@onready var player:Player = get_node("../Player")
 
+@export var limit:Array[CollisionShape2D] = []
+
+func _ready() -> void:
+	set_blocking_limit(false)
 
 func _process(delta):
 	# Ensure necessary nodes are valid
@@ -70,3 +74,8 @@ func _process(delta):
 
 		# Update the camera's global position to the clamped position
 		global_position = clamped_position
+
+
+func set_blocking_limit(statuts:bool)->void:
+	for c in limit:
+		c.disabled = !statuts

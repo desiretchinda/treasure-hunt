@@ -140,5 +140,5 @@ grow_vertical = 0
 theme_override_styles/normal = SubResource("StyleBoxTexture_jum18")
 text = "Next Hunt"
 
-[node name="StreamPlayer" type="AudioStreamPlayer2D" parent="."]
+[node name="StreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_dxlav")

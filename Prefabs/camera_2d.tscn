@@ -8,37 +8,40 @@ size = Vector2(1308, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gkt78"]
 size = Vector2(23, 709)
 
-[node name="Camera2D" type="Camera2D"]
+[node name="Camera2D" type="Camera2D" node_paths=PackedStringArray("limit")]
 script = ExtResource("1_2xnml")
+limit = [NodePath("Limit/LimitUp/CollisionShape2D"), NodePath("Limit/LimitDown/CollisionShape2D"), NodePath("Limit/LimitLeft/CollisionShape2D"), NodePath("Limit/LimitRight/CollisionShape2D")]
 
-[node name="LimitUp" type="StaticBody2D" parent="."]
+[node name="Limit" type="Node2D" parent="."]
+
+[node name="LimitUp" type="StaticBody2D" parent="Limit"]
 position = Vector2(-567, -312)
 collision_layer = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LimitUp"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Limit/LimitUp"]
 position = Vector2(603, 0)
 shape = SubResource("RectangleShape2D_2xnml")
 
-[node name="LimitDown" type="StaticBody2D" parent="."]
+[node name="LimitDown" type="StaticBody2D" parent="Limit"]
 position = Vector2(-567, 318)
 collision_layer = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LimitDown"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Limit/LimitDown"]
 position = Vector2(603, 0)
 shape = SubResource("RectangleShape2D_2xnml")
 
-[node name="LimitLeft" type="StaticBody2D" parent="."]
+[node name="LimitLeft" type="StaticBody2D" parent="Limit"]
 position = Vector2(-567, 318)
 collision_layer = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LimitLeft"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Limit/LimitLeft"]
 position = Vector2(-2.5, -325.5)
 shape = SubResource("RectangleShape2D_gkt78")
 
-[node name="LimitRight" type="StaticBody2D" parent="."]
+[node name="LimitRight" type="StaticBody2D" parent="Limit"]
 position = Vector2(569, 318)
 collision_layer = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LimitRight"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Limit/LimitRight"]
 position = Vector2(-2.5, -325.5)
 shape = SubResource("RectangleShape2D_gkt78")

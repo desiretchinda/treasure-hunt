@@ -7,7 +7,7 @@ static var instance:WinPanel
 @onready var play_again_button: Button = $Panel/RestartButton
 @onready var play_next_button: Button = $Panel/NextButton
 @onready var quit_button: TextureButton = $Panel/CloseButton
-@onready var stream_player: AudioStreamPlayer2D = $StreamPlayer
+@onready var stream_player: AudioStreamPlayer = $StreamPlayer
 
 func _ready():
 	instance = self

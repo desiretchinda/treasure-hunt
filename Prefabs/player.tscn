@@ -299,8 +299,5 @@ texture = ExtResource("45_375py")
 one_shot = true
 process_material = SubResource("ParticleProcessMaterial_3rsih")
 
-[node name="StreamPlayer" type="AudioStreamPlayer2D" parent="."]
+[node name="StreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("44_da5es")
-
-[node name="AudioListener2D" type="AudioListener2D" parent="."]
-current = true
