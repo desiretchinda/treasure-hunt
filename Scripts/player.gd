@@ -10,7 +10,8 @@ static var instance:Player
 @onready var map_node = get_node("../Map")
 # Assuming GroundLayer is a child of Map.
 @onready var ground_layer_node = get_node("../Map/GroundLayer")
-@onready var blood_particle:GPUParticles2D = $GPUParticles2D
+@onready var blood_particle:GPUParticles2D = $BloodParticle
+@onready var coin_particle:GPUParticles2D = $CoinParticle
 @onready var stream_player:AudioStreamPlayer2D = $StreamPlayer
 # --- End Add References ---
 @export var speed: float = 200 # Movement speed in pixels per second
@@ -21,6 +22,7 @@ var can_move:bool = false
 
 func _ready():
 	instance = self
+	coin_particle.emitting = true
 	# --- Position Player at Bottom-Left of Map ---
 	# Ensure required nodes and tile set are ready for positioning
 	if map_node and ground_layer_node and ground_layer_node.tile_set and animated_sprite_2d and animated_sprite_2d.sprite_frames:
@@ -121,6 +123,7 @@ func hit_player()->void:
 func collected_coin()->void:
 	coins += 1
 	SoundManager.play_coin()
+	coin_particle.emitting = true
 	if GameManager.has_signal("coin_collected"):
 		GameManager.coin_collected.emit()
 	print("coin collected ",coins)

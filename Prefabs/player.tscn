@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://cushluqsadcci"]
+[gd_scene load_steps=52 format=3 uid="uid://cushluqsadcci"]
 
 [ext_resource type="Script" uid="uid://dimhjl3w3am7k" path="res://Scripts/player.gd" id="1_0fs2y"]
 [ext_resource type="Texture2D" uid="uid://bcqvihdf5a7f" path="res://Sprites/Player/IdleAnimations/IdleAnimations-back_0.png" id="1_3vpsw"]
@@ -44,6 +44,7 @@
 [ext_resource type="Texture2D" uid="uid://g04onhodtukd" path="res://Sprites/Misc/lamp.png" id="42_ob8dk"]
 [ext_resource type="Texture2D" uid="uid://b0eas8k8n5lk3" path="res://Sprites/Misc/flash.png" id="43_faewp"]
 [ext_resource type="AudioStream" uid="uid://df4gkcn2fls5o" path="res://Audios/Sfx/woman-screaming-sfx-.mp3" id="44_da5es"]
+[ext_resource type="Texture2D" uid="uid://7nta8yr7puf" path="res://Sprites/Misc/Mobile - Coin Master - Coin/Mobile - Coin Master - Coin-0.png" id="45_375py"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_3icqa"]
 animations = [{
@@ -240,6 +241,24 @@ scale_min = 0.05
 scale_max = 0.05
 color = Color(1, 0, 0, 1)
 
+[sub_resource type="Curve" id="Curve_375py"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.145015, 0.75), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_3rsih"]
+curve = SubResource("Curve_375py")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3rsih"]
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 30.0
+initial_velocity_min = 50.0
+initial_velocity_max = 50.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.01
+scale_max = 0.05
+scale_curve = SubResource("CurveTexture_3rsih")
+
 [node name="Player" type="CharacterBody2D"]
 y_sort_enabled = true
 collision_mask = 7
@@ -261,7 +280,7 @@ shadow_color = Color(0, 0, 0, 1)
 texture = ExtResource("42_ob8dk")
 texture_scale = 0.5
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+[node name="BloodParticle" type="GPUParticles2D" parent="."]
 z_index = 1
 position = Vector2(0, -10)
 emitting = false
@@ -273,5 +292,15 @@ fixed_fps = 60
 local_coords = true
 process_material = SubResource("ParticleProcessMaterial_ob8dk")
 
+[node name="CoinParticle" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 30
+texture = ExtResource("45_375py")
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_3rsih")
+
 [node name="StreamPlayer" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("44_da5es")
+
+[node name="AudioListener2D" type="AudioListener2D" parent="."]
+current = true

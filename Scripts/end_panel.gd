@@ -29,8 +29,6 @@ func _ready():
 func show_panel():
 	show()
 	stream_player.play()
-	# Pause the game when the win panel is shown
-	get_tree().paused = true
 
 
 # Hides the win panel
