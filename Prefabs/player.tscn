@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://cushluqsadcci"]
+[gd_scene load_steps=47 format=3 uid="uid://cushluqsadcci"]
 
 [ext_resource type="Script" uid="uid://dimhjl3w3am7k" path="res://Scripts/player.gd" id="1_0fs2y"]
 [ext_resource type="Texture2D" uid="uid://bcqvihdf5a7f" path="res://Sprites/Player/IdleAnimations/IdleAnimations-back_0.png" id="1_3vpsw"]
@@ -42,6 +42,7 @@
 [ext_resource type="Texture2D" uid="uid://ba0u63bp3g6g4" path="res://Sprites/Player/WalkAnimations/WalkAnimations-left_5.png" id="35_3rsih"]
 [ext_resource type="Texture2D" uid="uid://b37qcxuasiqpa" path="res://Sprites/Player/WalkAnimations/WalkAnimations-right_5.png" id="35_nvkvw"]
 [ext_resource type="Texture2D" uid="uid://g04onhodtukd" path="res://Sprites/Misc/lamp.png" id="42_ob8dk"]
+[ext_resource type="Texture2D" uid="uid://b0eas8k8n5lk3" path="res://Sprites/Misc/flash.png" id="43_faewp"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_3icqa"]
 animations = [{
@@ -209,6 +210,18 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3vpsw"]
 size = Vector2(14, 45)
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ob8dk"]
+particle_flag_disable_z = true
+angle_min = 1.07288e-05
+angle_max = 360.0
+direction = Vector3(0, -1, 0)
+initial_velocity_min = 50.0
+initial_velocity_max = 90.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.05
+scale_max = 0.05
+color = Color(1, 0, 0, 1)
+
 [node name="Player" type="CharacterBody2D"]
 y_sort_enabled = true
 collision_mask = 7
@@ -229,3 +242,15 @@ shape = SubResource("RectangleShape2D_3vpsw")
 shadow_color = Color(0, 0, 0, 1)
 texture = ExtResource("42_ob8dk")
 texture_scale = 0.5
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+z_index = 1
+position = Vector2(0, -10)
+emitting = false
+amount = 20
+texture = ExtResource("43_faewp")
+lifetime = 0.5
+one_shot = true
+fixed_fps = 60
+local_coords = true
+process_material = SubResource("ParticleProcessMaterial_ob8dk")

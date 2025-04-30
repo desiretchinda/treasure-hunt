@@ -10,6 +10,7 @@ static var instance:Player
 @onready var map_node = get_node("../Map")
 # Assuming GroundLayer is a child of Map.
 @onready var ground_layer_node = get_node("../Map/GroundLayer")
+@onready var blood_particle:GPUParticles2D = $GPUParticles2D
 # --- End Add References ---
 @export var speed: float = 200 # Movement speed in pixels per second
 
@@ -107,6 +108,12 @@ func _physics_process(_delta):
 		# If not moving, play idle animation
 		animated_sprite_2d.play("Idle_"+direction_name)
 	# --- End Animation Handling ---
+
+func hit_player()->void:
+	can_move = false
+	if direction_name == "Back":
+		blood_particle.z_index = 0
+	blood_particle.emitting = true
 
 func collected_coin()->void:
 	coins += 1
