@@ -95,7 +95,7 @@ max_change_time = 7.0
 sprite_frames = SubResource("SpriteFrames_govpq")
 animation = &"Idle"
 autoplay = "Idle"
-frame_progress = 0.949155
+frame_progress = 0.435985
 speed_scale = 1.5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://cushluqsadcci"]
+[gd_scene load_steps=45 format=3 uid="uid://cushluqsadcci"]
 
 [ext_resource type="Script" uid="uid://dimhjl3w3am7k" path="res://Scripts/player.gd" id="1_0fs2y"]
 [ext_resource type="Texture2D" uid="uid://bcqvihdf5a7f" path="res://Sprites/Player/IdleAnimations/IdleAnimations-back_0.png" id="1_3vpsw"]
@@ -41,6 +41,7 @@
 [ext_resource type="Texture2D" uid="uid://b2n2kle1280at" path="res://Sprites/Player/WalkAnimations/WalkAnimations-right_4.png" id="34_abtri"]
 [ext_resource type="Texture2D" uid="uid://ba0u63bp3g6g4" path="res://Sprites/Player/WalkAnimations/WalkAnimations-left_5.png" id="35_3rsih"]
 [ext_resource type="Texture2D" uid="uid://b37qcxuasiqpa" path="res://Sprites/Player/WalkAnimations/WalkAnimations-right_5.png" id="35_nvkvw"]
+[ext_resource type="Texture2D" uid="uid://g04onhodtukd" path="res://Sprites/Misc/lamp.png" id="42_ob8dk"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_3icqa"]
 animations = [{
@@ -223,3 +224,7 @@ speed_scale = 1.5
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, 1.5)
 shape = SubResource("RectangleShape2D_3vpsw")
+
+[node name="Lamp" type="PointLight2D" parent="."]
+texture = ExtResource("42_ob8dk")
+texture_scale = 0.5

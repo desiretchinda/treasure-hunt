@@ -18,3 +18,7 @@ position = Vector2(523, 400)
 [node name="Camera2D" parent="." instance=ExtResource("3_tiviu")]
 
 [node name="HUD" parent="." instance=ExtResource("4_yovil")]
+
+[node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
+color = Color(0, 0, 0.403922, 0.580392)
+blend_mode = 2
