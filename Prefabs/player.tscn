@@ -226,5 +226,6 @@ position = Vector2(0, 1.5)
 shape = SubResource("RectangleShape2D_3vpsw")
 
 [node name="Lamp" type="PointLight2D" parent="."]
+shadow_color = Color(0, 0, 0, 1)
 texture = ExtResource("42_ob8dk")
 texture_scale = 0.5
