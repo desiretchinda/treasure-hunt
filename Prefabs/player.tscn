@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://cushluqsadcci"]
+[gd_scene load_steps=48 format=3 uid="uid://cushluqsadcci"]
 
 [ext_resource type="Script" uid="uid://dimhjl3w3am7k" path="res://Scripts/player.gd" id="1_0fs2y"]
 [ext_resource type="Texture2D" uid="uid://bcqvihdf5a7f" path="res://Sprites/Player/IdleAnimations/IdleAnimations-back_0.png" id="1_3vpsw"]
@@ -43,9 +43,27 @@
 [ext_resource type="Texture2D" uid="uid://b37qcxuasiqpa" path="res://Sprites/Player/WalkAnimations/WalkAnimations-right_5.png" id="35_nvkvw"]
 [ext_resource type="Texture2D" uid="uid://g04onhodtukd" path="res://Sprites/Misc/lamp.png" id="42_ob8dk"]
 [ext_resource type="Texture2D" uid="uid://b0eas8k8n5lk3" path="res://Sprites/Misc/flash.png" id="43_faewp"]
+[ext_resource type="AudioStream" uid="uid://df4gkcn2fls5o" path="res://Audios/Sfx/woman-screaming-sfx-.mp3" id="44_da5es"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_3icqa"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_q7l0e")
+}, {
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_q7l0e")
+}],
+"loop": true,
+"name": &"Dead",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("1_3vpsw")
@@ -254,3 +272,6 @@ one_shot = true
 fixed_fps = 60
 local_coords = true
 process_material = SubResource("ParticleProcessMaterial_ob8dk")
+
+[node name="StreamPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("44_da5es")

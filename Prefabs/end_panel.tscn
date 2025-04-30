@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://d3h4iwxxh62bs"]
+[gd_scene load_steps=11 format=3 uid="uid://d3h4iwxxh62bs"]
 
 [ext_resource type="Script" uid="uid://c444d6atiughh" path="res://Scripts/end_panel.gd" id="1_dxlav"]
 [ext_resource type="Texture2D" uid="uid://6ag18bm1sppe" path="res://Sprites/UI/panel_grey_bolts_blue.png" id="2_mfnro"]
 [ext_resource type="Texture2D" uid="uid://fsik7pmc0vbs" path="res://Sprites/UI/button_red_close.png" id="4_qkwv4"]
 [ext_resource type="Texture2D" uid="uid://co62r17rgbxci" path="res://Sprites/UI/button_grey.png" id="5_5vc1e"]
+[ext_resource type="AudioStream" uid="uid://k36lg5dfj0w2" path="res://Audios/Sfx/YouWin.mp3" id="5_dxlav"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q5tb1"]
 texture = ExtResource("2_mfnro")
@@ -138,3 +139,6 @@ grow_horizontal = 0
 grow_vertical = 0
 theme_override_styles/normal = SubResource("StyleBoxTexture_jum18")
 text = "Next Hunt"
+
+[node name="StreamPlayer" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_dxlav")

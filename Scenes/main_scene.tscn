@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://oknplsc5gj6u"]
+[gd_scene load_steps=12 format=3 uid="uid://oknplsc5gj6u"]
 
 [ext_resource type="Texture2D" uid="uid://6ag18bm1sppe" path="res://Sprites/UI/panel_grey_bolts_blue.png" id="1_6l7je"]
 [ext_resource type="Texture2D" uid="uid://c2vc83n4s40me" path="res://Sprites/UI/banner_classic_curtain.png" id="1_52fb6"]
 [ext_resource type="Script" uid="uid://d3kovf8dj00xk" path="res://Scripts/main_scene.gd" id="1_iacmt"]
 [ext_resource type="Texture2D" uid="uid://cfmpqtrt4ro7c" path="res://Sprites/UI/main_menu.PNG" id="1_x6ack"]
 [ext_resource type="Texture2D" uid="uid://co62r17rgbxci" path="res://Sprites/UI/button_grey.png" id="3_jv6wh"]
+[ext_resource type="AudioStream" uid="uid://ccph8fjs0feib" path="res://Audios/Musics/MenuMusic.mp3" id="6_6ev3c"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jv6wh"]
 texture = ExtResource("1_6l7je")
@@ -33,44 +34,58 @@ texture_margin_bottom = 20.0
 [sub_resource type="LabelSettings" id="LabelSettings_iacmt"]
 font_color = Color(0, 1, 0, 1)
 
-[node name="MainScene" type="Node2D"]
-script = ExtResource("1_iacmt")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+[node name="MainScene" type="Control"]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_iacmt")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -5.0
+offset_right = 9.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("1_x6ack")
 
-[node name="Panel" type="Panel" parent="CanvasLayer"]
-anchors_preset = 5
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
+anchor_bottom = 0.5
 offset_left = -212.0
-offset_top = 94.0
+offset_top = -230.0
 offset_right = 212.0
-offset_bottom = 554.0
+offset_bottom = 230.0
 grow_horizontal = 2
+grow_vertical = 2
 pivot_offset = Vector2(0, 8.56)
 theme_override_styles/panel = SubResource("StyleBoxTexture_jv6wh")
 
-[node name="Banner" type="Panel" parent="CanvasLayer/Panel"]
+[node name="Banner" type="Panel" parent="Panel"]
 layout_mode = 1
-anchors_preset = 5
+anchors_preset = 8
 anchor_left = 0.5
+anchor_top = 0.5
 anchor_right = 0.5
-offset_left = -246.5
-offset_top = -46.0
-offset_right = 246.5
-offset_bottom = 58.0
+anchor_bottom = 0.5
+offset_left = -246.0
+offset_top = -276.0
+offset_right = 247.0
+offset_bottom = -172.0
 grow_horizontal = 2
+grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_6l7je")
 
-[node name="Label" type="Label" parent="CanvasLayer/Panel/Banner"]
+[node name="Label" type="Label" parent="Panel/Banner"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -87,7 +102,7 @@ text = "Treasure Hunt"
 label_settings = SubResource("LabelSettings_52fb6")
 horizontal_alignment = 1
 
-[node name="StartButton" type="Button" parent="CanvasLayer/Panel"]
+[node name="StartButton" type="Button" parent="Panel"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -104,7 +119,7 @@ theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxTexture_x6ack")
 text = "START GAME"
 
-[node name="QuitButton" type="Button" parent="CanvasLayer/Panel"]
+[node name="QuitButton" type="Button" parent="Panel"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -121,7 +136,7 @@ theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxTexture_x6ack")
 text = "QUIT"
 
-[node name="Label" type="Label" parent="CanvasLayer/Panel"]
+[node name="Label" type="Label" parent="Panel"]
 layout_mode = 0
 offset_left = 28.0
 offset_top = 90.0
@@ -129,3 +144,7 @@ offset_right = 394.0
 offset_bottom = 113.0
 text = "Collect all coins and return at the starting point"
 label_settings = SubResource("LabelSettings_iacmt")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_6ev3c")
+autoplay = true

@@ -99,7 +99,7 @@ func start_attack():
 	# Create a one-shot timer to end the attack animation after its duration
 	var attack_timer = Timer.new()
 	add_child(attack_timer) # Add the timer as a child so it's managed by the scene tree
-	attack_timer.wait_time = attack_duration+0.3
+	attack_timer.wait_time = attack_duration+1
 	attack_timer.one_shot = true
 	attack_timer.timeout.connect(end_attack)
 	attack_timer.start()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://dfknb5o52d8ge"]
+[gd_scene load_steps=8 format=3 uid="uid://dfknb5o52d8ge"]
 
 [ext_resource type="PackedScene" uid="uid://cushluqsadcci" path="res://Prefabs/player.tscn" id="1_ckfrc"]
 [ext_resource type="PackedScene" uid="uid://c022l4ax0dcqt" path="res://Prefabs/map.tscn" id="2_363iw"]
@@ -6,9 +6,15 @@
 [ext_resource type="PackedScene" uid="uid://coavirghx200t" path="res://Prefabs/hud.tscn" id="4_yovil"]
 [ext_resource type="PackedScene" uid="uid://ddbj6y806d6fb" path="res://Prefabs/door.tscn" id="6_bb1o8"]
 [ext_resource type="PackedScene" uid="uid://d3h4iwxxh62bs" path="res://Prefabs/end_panel.tscn" id="6_jiyiw"]
+[ext_resource type="AudioStream" uid="uid://bpnrgqqal1w5f" path="res://Audios/Musics/haunted-gravey.mp3" id="7_jiyiw"]
 
 [node name="GamePlay" type="Node2D"]
 y_sort_enabled = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_jiyiw")
+volume_db = 24.0
+autoplay = true
 
 [node name="Map" parent="." instance=ExtResource("2_363iw")]
 map_width = 150

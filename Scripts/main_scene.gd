@@ -1,4 +1,4 @@
-class_name MainMenu extends Node2D
+class_name MainMenu extends Control
 
 @onready var btn_start:Button = $Panel/StartButton
 @onready var quit_start:Button = $Panel/QuitButton
@@ -12,7 +12,9 @@ func _ready() -> void:
 
 
 func _on_start_pressed()->void:
-	print("start game")
+	SoundManager.play_click()
+	get_tree().change_scene_to_file("res://Scenes/game_play.tscn")
 
 func _on_quit_pressed()->void:
-	print("quit game")
+	SoundManager.play_click()
+	get_tree().quit()

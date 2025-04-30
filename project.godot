@@ -18,9 +18,12 @@ config/icon="res://icon.svg"
 [autoload]
 
 GameManager="*res://Scripts/GameManager.gd"
+SoundManager="*res://Scripts/sound_manager.gd"
 
 [display]
 
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep_width"
 window/dpi/allow_hidpi=false
 
 [global_group]

@@ -7,7 +7,7 @@ static var instance:WinPanel
 @onready var play_again_button: Button = $Panel/RestartButton
 @onready var play_next_button: Button = $Panel/NextButton
 @onready var quit_button: TextureButton = $Panel/CloseButton
-
+@onready var stream_player: AudioStreamPlayer2D = $StreamPlayer
 
 func _ready():
 	instance = self
@@ -28,6 +28,7 @@ func _ready():
 # Shows the win panel
 func show_panel():
 	show()
+	stream_player.play()
 	# Pause the game when the win panel is shown
 	get_tree().paused = true
 
@@ -41,13 +42,16 @@ func hide_panel():
 
 # Called when the "Play Again" button is pressed
 func _on_play_again_button_pressed():
-	print("Play Again button pressed.")
+	SoundManager.play_click()
+	get_tree().reload_current_scene()
 
 
 # Called when the "Play Next" button is pressed
 func _on_play_next_button_pressed():
-	print("Play Next button pressed.")
+	SoundManager.play_click()
+	get_tree().reload_current_scene()
 
 # Called when the "Play Next" button is pressed
 func _on_quit_button_pressed():
-	print("Quit button pressed.")
+	SoundManager.play_click()
+	get_tree().change_scene_to_file("res://Scenes/main_scene.tscn")

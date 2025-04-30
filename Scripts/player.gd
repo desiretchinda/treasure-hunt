@@ -11,6 +11,7 @@ static var instance:Player
 # Assuming GroundLayer is a child of Map.
 @onready var ground_layer_node = get_node("../Map/GroundLayer")
 @onready var blood_particle:GPUParticles2D = $GPUParticles2D
+@onready var stream_player:AudioStreamPlayer2D = $StreamPlayer
 # --- End Add References ---
 @export var speed: float = 200 # Movement speed in pixels per second
 
@@ -114,9 +115,12 @@ func hit_player()->void:
 	if direction_name == "Back":
 		blood_particle.z_index = 0
 	blood_particle.emitting = true
+	animated_sprite_2d.play("Dead")
+	stream_player.play()
 
 func collected_coin()->void:
 	coins += 1
+	SoundManager.play_coin()
 	if GameManager.has_signal("coin_collected"):
 		GameManager.coin_collected.emit()
 	print("coin collected ",coins)
