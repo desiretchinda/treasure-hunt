@@ -1,0 +1,140 @@
+[gd_scene load_steps=10 format=3 uid="uid://d3h4iwxxh62bs"]
+
+[ext_resource type="Script" uid="uid://c444d6atiughh" path="res://Scripts/end_panel.gd" id="1_dxlav"]
+[ext_resource type="Texture2D" uid="uid://6ag18bm1sppe" path="res://Sprites/UI/panel_grey_bolts_blue.png" id="2_mfnro"]
+[ext_resource type="Texture2D" uid="uid://fsik7pmc0vbs" path="res://Sprites/UI/button_red_close.png" id="4_qkwv4"]
+[ext_resource type="Texture2D" uid="uid://co62r17rgbxci" path="res://Sprites/UI/button_grey.png" id="5_5vc1e"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_q5tb1"]
+texture = ExtResource("2_mfnro")
+texture_margin_left = 42.0
+texture_margin_top = 42.0
+texture_margin_right = 42.0
+texture_margin_bottom = 42.0
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_pa45g"]
+load_path = "res://.godot/imported/panel_grey_bolts.png-7baf0bc55b0625fb02eaa253e6399234.ctex"
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_418k6"]
+texture = SubResource("CompressedTexture2D_pa45g")
+texture_margin_left = 42.0
+texture_margin_top = 42.0
+texture_margin_right = 42.0
+texture_margin_bottom = 42.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_jum18"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jum18"]
+texture = ExtResource("5_5vc1e")
+texture_margin_left = 15.0
+texture_margin_top = 15.0
+texture_margin_right = 15.0
+texture_margin_bottom = 15.0
+
+[node name="EndPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_dxlav")
+
+[node name="Dimed" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -310.0
+offset_top = -193.5
+offset_right = 310.0
+offset_bottom = 193.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_q5tb1")
+
+[node name="InnerPanel" type="Panel" parent="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -249.0
+offset_top = -118.0
+offset_right = 250.0
+offset_bottom = 65.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_418k6")
+
+[node name="Label" type="Label" parent="Panel/InnerPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -198.0
+offset_top = -38.5
+offset_right = 198.0
+offset_bottom = 38.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Congratulations, you've just collected 
+all the treasures of this land."
+label_settings = SubResource("LabelSettings_jum18")
+horizontal_alignment = 1
+vertical_alignment = 1
+justification_flags = 162
+
+[node name="CloseButton" type="TextureButton" parent="Panel"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -155.0
+offset_top = -14.5
+offset_right = -59.0
+offset_bottom = 33.5
+grow_horizontal = 0
+texture_normal = ExtResource("4_qkwv4")
+
+[node name="RestartButton" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 110.0
+offset_top = -88.5
+offset_right = 293.0
+offset_bottom = -35.5
+grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxTexture_jum18")
+text = "Restart Hunt"
+
+[node name="NextButton" type="Button" parent="Panel"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -286.0
+offset_top = -88.5
+offset_right = -103.0
+offset_bottom = -35.5
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxTexture_jum18")
+text = "Next Hunt"

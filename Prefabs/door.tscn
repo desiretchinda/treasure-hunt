@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://ddbj6y806d6fb"]
+
+[ext_resource type="Script" uid="uid://m1od0eoley2k" path="res://Scripts/door.gd" id="1_bp8im"]
+[ext_resource type="Texture2D" uid="uid://dnx55ybe6dp7a" path="res://Sprites/Misc/WoodenCrate.png" id="1_uqoeb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uqoeb"]
+size = Vector2(26, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bp8im"]
+size = Vector2(24.5, 3)
+
+[node name="Door" type="Area2D"]
+scale = Vector2(2, 2)
+script = ExtResource("1_bp8im")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_uqoeb")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 10)
+shape = SubResource("RectangleShape2D_uqoeb")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, 4.5)
+shape = SubResource("RectangleShape2D_bp8im")

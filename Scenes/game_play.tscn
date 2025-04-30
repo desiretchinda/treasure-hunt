@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://dfknb5o52d8ge"]
+[gd_scene load_steps=7 format=3 uid="uid://dfknb5o52d8ge"]
 
 [ext_resource type="PackedScene" uid="uid://cushluqsadcci" path="res://Prefabs/player.tscn" id="1_ckfrc"]
 [ext_resource type="PackedScene" uid="uid://c022l4ax0dcqt" path="res://Prefabs/map.tscn" id="2_363iw"]
 [ext_resource type="PackedScene" uid="uid://dxdqcby0gh6rl" path="res://Prefabs/camera_2d.tscn" id="3_tiviu"]
 [ext_resource type="PackedScene" uid="uid://coavirghx200t" path="res://Prefabs/hud.tscn" id="4_yovil"]
+[ext_resource type="PackedScene" uid="uid://ddbj6y806d6fb" path="res://Prefabs/door.tscn" id="6_bb1o8"]
+[ext_resource type="PackedScene" uid="uid://d3h4iwxxh62bs" path="res://Prefabs/end_panel.tscn" id="6_jiyiw"]
 
 [node name="GamePlay" type="Node2D"]
 y_sort_enabled = true
@@ -12,13 +14,21 @@ y_sort_enabled = true
 map_width = 150
 map_height = 100
 
+[node name="Door" parent="." instance=ExtResource("6_bb1o8")]
+position = Vector2(-162, 584)
+
 [node name="Player" parent="." instance=ExtResource("1_ckfrc")]
 position = Vector2(523, 400)
 
 [node name="Camera2D" parent="." instance=ExtResource("3_tiviu")]
-
-[node name="HUD" parent="." instance=ExtResource("4_yovil")]
+position = Vector2(585, 323)
 
 [node name="Light" type="DirectionalLight2D" parent="."]
 color = Color(0, 0, 0.403922, 0.796078)
 blend_mode = 2
+
+[node name="HUD" parent="." instance=ExtResource("4_yovil")]
+
+[node name="Panels" type="CanvasLayer" parent="."]
+
+[node name="EndPanel" parent="Panels" instance=ExtResource("6_jiyiw")]

@@ -67,7 +67,7 @@ func _ready():
 	else:
 		print("Error: Required nodes (Map, GroundLayer, TileSet) or AnimatedSprite2D/SpriteFrames not ready for initial positioning. Check scene structure and resource assignments.")
 	# --- End Position Player ---
-	
+	Door.instance.global_position = global_position+Vector2(0,-40)
 	await get_tree().create_timer(.5).timeout
 	can_move = true
 
@@ -120,6 +120,9 @@ func collected_coin()->void:
 	if GameManager.has_signal("coin_collected"):
 		GameManager.coin_collected.emit()
 	print("coin collected ",coins)
+	
+func has_collected_all_coins()->bool:
+	return coins >= MapGeneration.instance.total_coins_generated
 
 # --- Add Game Reset Method ---
 # This method is called by the Enemy script when the player is hit.

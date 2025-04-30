@@ -11,13 +11,17 @@ config_version=5
 [application]
 
 config/name="Treasure Hunt"
-run/main_scene="uid://dfknb5o52d8ge"
+run/main_scene="uid://oknplsc5gj6u"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
 GameManager="*res://Scripts/GameManager.gd"
+
+[display]
+
+window/dpi/allow_hidpi=false
 
 [global_group]
 
