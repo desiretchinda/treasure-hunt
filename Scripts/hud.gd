@@ -6,6 +6,8 @@ class_name Hud extends CanvasLayer
 
 func _ready() -> void:
 	GameManager.coin_collected.connect(on_coin_collected)
+	label_goal1.label_settings.font_color = Color.RED
+	label_goal2.label_settings.font_color = Color.RED
 	refresh_hud.call_deferred()
 
 func refresh_hud()->void:
