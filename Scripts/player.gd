@@ -19,9 +19,11 @@ static var instance:Player
 var direction_name:String = "Face"
 var coins = 0 # Keeps track of collected coins
 var can_move:bool = false
+var starting_point_reached:bool = false
 
 func _ready():
 	instance = self
+	coin_particle.global_position = Vector2.ZERO
 	coin_particle.emitting = true
 	# --- Position Player at Bottom-Left of Map ---
 	# Ensure required nodes and tile set are ready for positioning
@@ -125,6 +127,7 @@ func hit_player()->void:
 func collected_coin()->void:
 	coins += 1
 	SoundManager.play_coin()
+	coin_particle.global_position = global_position
 	coin_particle.emitting = true
 	if GameManager.has_signal("coin_collected"):
 		GameManager.coin_collected.emit()
@@ -132,6 +135,9 @@ func collected_coin()->void:
 	
 func has_collected_all_coins()->bool:
 	return coins >= MapGeneration.instance.total_coins_generated
+
+func has_reached_starting_point()->bool:
+	return starting_point_reached
 
 # --- Add Game Reset Method ---
 # This method is called by the Enemy script when the player is hit.

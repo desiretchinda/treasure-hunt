@@ -91,7 +91,7 @@ var tile_set_ground_source_id = 0 # Assuming ground tiles are in the first sourc
 func _ready():
 	# Assign this instance to the static variable for singleton access
 	instance = self
-
+	generation_seed += GameManager.level
 	# --- Seed the random number generators ---
 	# Use the user-provided seed for Godot's general RNG (used by randf(), randi() etc. for obstacle/coin/enemy chances)
 	seed(generation_seed)

@@ -40,6 +40,8 @@ func _ready():
 
 
 func _physics_process(_delta):
+	if !Player.instance.can_move:
+		return
 	# Only move if not attacking
 	if not is_attacking:
 		# Update the enemy's velocity based on its current direction and speed

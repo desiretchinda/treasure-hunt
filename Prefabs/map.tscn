@@ -2091,6 +2091,7 @@ coin_boundary_margin = 3
 coin_obstacle_exclusion_margin = 3
 enemy_scene = ExtResource("3_eqwmn")
 enemy_density = 0.009
+min_distance_from_player_start = 10
 
 [node name="GroundLayer" type="TileMapLayer" parent="."]
 tile_set = SubResource("TileSet_0in8a")

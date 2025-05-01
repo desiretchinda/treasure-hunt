@@ -242,7 +242,7 @@ scale_max = 0.05
 color = Color(1, 0, 0, 1)
 
 [sub_resource type="Curve" id="Curve_375py"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.145015, 0.75), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 3.54415, 0, 1, Vector2(0.196809, 0.697518), 0.0, 0.0, 0, 0, Vector2(1, 0), -0.868433, 0.0, 1, 0]
 point_count = 3
 
 [sub_resource type="CurveTexture" id="CurveTexture_3rsih"]
@@ -255,8 +255,8 @@ spread = 30.0
 initial_velocity_min = 50.0
 initial_velocity_max = 50.0
 gravity = Vector3(0, 0, 0)
-scale_min = 0.01
-scale_max = 0.05
+scale_min = 0.05
+scale_max = 0.2
 scale_curve = SubResource("CurveTexture_3rsih")
 
 [node name="Player" type="CharacterBody2D"]

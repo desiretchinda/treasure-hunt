@@ -47,6 +47,8 @@ func _on_play_again_button_pressed():
 # Called when the "Play Next" button is pressed
 func _on_play_next_button_pressed():
 	SoundManager.play_click()
+	GameManager.level += 1
+	GameManager.save_game()
 	get_tree().reload_current_scene()
 
 # Called when the "Play Next" button is pressed

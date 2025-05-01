@@ -83,6 +83,7 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_govpq"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lgw76"]
+size = Vector2(25, 22)
 
 [node name="Enemy" type="CharacterBody2D" groups=["Enemies", "coin"]]
 collision_mask = 2
@@ -104,6 +105,7 @@ shape = SubResource("RectangleShape2D_govpq")
 [node name="Hitbox" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(1.5, 0)
 shape = SubResource("RectangleShape2D_lgw76")
 
 [node name="ChangeDirectionTimer" type="Timer" parent="."]
